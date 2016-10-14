@@ -25,9 +25,8 @@ import org.springframework.web.servlet.view.ContentNegotiatingViewResolver;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 /**
- * A classe <code>WebConfig</code> contém configurações do Spring referentes
- * a camada de apresentação.
- *
+ * A classe <code>WebConfig</code> contem configuracoes do Spring referentes
+ * a camada de apresentacao.
  * 
  */
 @Configuration

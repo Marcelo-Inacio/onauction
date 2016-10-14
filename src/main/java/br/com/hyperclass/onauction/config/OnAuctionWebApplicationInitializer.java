@@ -1,5 +1,5 @@
 /*
- * @(#)OnAuction.java 1.0 23/09/2016
+ * @(#)OnAuctionWebApplicationInitializer.java 1.0 23/09/2016
  *
  * Copyright (c) 2016, hyperCLASS. All rights reserved. hyperCLASS
  * proprietary/confidential. Use is subject to license terms.
@@ -13,7 +13,11 @@ import javax.servlet.ServletException;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
-
+/**
+ * A classe <code>OnAuctionWebApplicationInitializer</code> representa a configuracao de
+ * inicializacao do Spring na aplicacao.
+ * 
+ */
 public class OnAuctionWebApplicationInitializer extends AbstractAnnotationConfigDispatcherServletInitializer
 		implements WebApplicationInitializer {
 

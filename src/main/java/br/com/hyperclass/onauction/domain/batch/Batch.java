@@ -62,8 +62,8 @@ public class Batch {
 		this.status = StatusBatch.CLOSED;
 	}
 	
-	public StatusBatch getStatus() {
-		return status;
+	public boolean isCreated() {
+		return status.equals(StatusBatch.CREATED);
 	}
 	
 	public int getCode() {

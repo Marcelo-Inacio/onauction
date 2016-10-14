@@ -18,9 +18,13 @@ import org.springframework.stereotype.Component;
 
 import br.com.hyperclass.onauction.domain.batch.Batch;
 import br.com.hyperclass.onauction.domain.batch.InvalidOperationBatchException;
+import br.com.hyperclass.onauction.domain.batch.NoBatchIsOpenException;
 import br.com.hyperclass.onauction.domain.batch.NotFoundBatchException;
-import br.com.hyperclass.onauction.domain.batch.StatusBatch;
-
+/**
+ * A classe <code>Auction</code> contém as funcionalidades de toda apicacao.
+ * @author Marcelo Inácio
+ *
+ */
 @Component
 public class Auction {
 	
@@ -33,7 +37,7 @@ public class Auction {
 	
 	public void removeBatch(final int code) throws AuctionException {
 		final Batch batch = batchMap.get(code);
-		if(batch == null || !batch.getStatus().equals(StatusBatch.CREATED)) {
+		if(batch == null || !batch.isCreated()) {
 			throw new InvalidOperationBatchException();
 		}
 		batchMap.remove(code);
@@ -45,14 +49,14 @@ public class Auction {
 	
 	public Batch getCurrentBatch() throws AuctionException {
 		if(currentBatch == null) {
-			throw new NotFoundBatchException();
+			throw new NoBatchIsOpenException();
 		}
 		return currentBatch;
 	}
 	
 	public void closeBatch() throws AuctionException {
 		if(currentBatch == null) {
-			throw new InvalidOperationBatchException();
+			throw new NoBatchIsOpenException();
 		}
 		currentBatch.close();
 		currentBatch = null;
@@ -67,15 +71,22 @@ public class Auction {
 		currentBatch.open();
 	}
 	
-	/**
-	 * Método que recupera todos os lotes de uma determinada data
-	 * @param date
-	 * @return
-	 */
-	public Collection<Batch> getAllBatchesByDate(final Date date) {
-		final List<Batch> allBatchesByDate = new ArrayList<>();
-		
-		return allBatchesByDate;
+/**
+ * Método que recupera todos os lotes entre datas determinada.
+ * @param startDate
+ * @param endDate
+ * @return
+ */
+	public Collection<Batch> getAllBatchesByDate(final Date startDate, final Date endDate) {
+		final List<Batch> allBatchesBetweenDates = new ArrayList<>();
+		for(final Batch batch : batchMap.values()) {
+			if(isBetweenDates(startDate, endDate, batch.getDate())) allBatchesBetweenDates.add(batch);
+		}
+		return allBatchesBetweenDates;
+	}
+	
+	private boolean isBetweenDates(final Date beforeDate, final Date afterDate, final Date currentDate) {
+		return currentDate.before(beforeDate) && currentDate.after(afterDate);
 	}
 
 }
