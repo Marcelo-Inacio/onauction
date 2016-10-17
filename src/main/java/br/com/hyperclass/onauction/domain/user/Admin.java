@@ -6,29 +6,23 @@
  */
 package br.com.hyperclass.onauction.domain.user;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
-import br.com.hyperclass.onauction.domain.auction.Auction;
 import br.com.hyperclass.onauction.domain.auction.AuctionException;
 import br.com.hyperclass.onauction.domain.batch.Batch;
 
 public class Admin extends User {
 
 	private static final long serialVersionUID = 1L;
-	
-	@Autowired
-	private Auction auction;
 
-	public Admin(final String name) {
-		super(name, ProfileType.ADMIN);
+	public Admin(final String name, final Login login) {
+		super(name, login, ProfileType.ADMIN);
 	}
 
 	public void createBatch(final Batch newBatch) {
-		auction.createBatch(newBatch);
+		super.auction.createBatch(newBatch);
 	}
 	
 	public void removeBatch(final int batchCode) throws AuctionException {
-		auction.removeBatch(batchCode);
+		super.auction.removeBatch(batchCode);
 	}
 	
 }

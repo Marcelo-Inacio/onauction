@@ -20,6 +20,7 @@ import br.com.hyperclass.onauction.domain.batch.Batch;
 import br.com.hyperclass.onauction.domain.batch.InvalidOperationBatchException;
 import br.com.hyperclass.onauction.domain.batch.NoBatchIsOpenException;
 import br.com.hyperclass.onauction.domain.batch.NotFoundBatchException;
+import br.com.hyperclass.onauction.domain.user.Buyer;
 /**
  * A classe <code>Auction</code> contém as funcionalidades de toda apicacao.
  * @author Marcelo Inácio
@@ -52,6 +53,13 @@ public class Auction {
 			throw new NoBatchIsOpenException();
 		}
 		return currentBatch;
+	}
+	
+	public void toBid(final Buyer buyer, final double value) throws AuctionException {
+		if(currentBatch == null) {
+			throw new NoBatchIsOpenException();
+		}
+		currentBatch.toBid(buyer, value);
 	}
 	
 	public void closeBatch() throws AuctionException {

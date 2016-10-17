@@ -8,15 +8,28 @@ package br.com.hyperclass.onauction.domain.user;
 
 import java.io.Serializable;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import br.com.hyperclass.onauction.domain.auction.Auction;
+/**
+ * A classe <code>User</code> e uma abstracao.
+ * @author Marcelo
+ *
+ */
 public abstract class User implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
 	private String name;
+	private final Login login;
 	private final ProfileType profile;
 	
-	protected User(final String name, final ProfileType profile) {
+	@Autowired
+	protected Auction auction;
+	
+	protected User(final String name, final Login login, final ProfileType profile) {
 		this.name = name;
+		this.login = login;
 		this.profile = profile;
 	}
 	
