@@ -6,18 +6,19 @@
  */
 package br.com.hyperclass.onauction.domain.user;
 
-import br.com.hyperclass.onauction.domain.auction.AuctionException;
-
 public class Buyer extends User {
 
 	private static final long serialVersionUID = 1L;
+	
+	private final String buyerCode;
 
-	public Buyer(final String name, final Login login) {
+	public Buyer(final String buyerCode, final String name, final Login login) {
 		super(name, login, ProfileType.BUYER);
+		this.buyerCode = buyerCode;
 	}
 	
-	public void toBid(final double value) throws AuctionException {
-		super.auction.toBid(this, value);
+	public String getCode() {
+		return buyerCode;
 	}
 	
 }

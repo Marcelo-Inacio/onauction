@@ -7,14 +7,29 @@
 package br.com.hyperclass.onauction.config;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 /**
- * A classe <code>SecurityConfig</code> representa a configuracao de seguranca da aplicacao
+ * A classe <code>SecurityConfig</code> representa a configuracao de seguranca da aplicacao em nivel de URI
  * @author Marcelo
  *
  */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+	
+	@Override
+	protected void configure(final HttpSecurity http) throws Exception {
+		http
+		.httpBasic()
+		.and()
+		.authorizeRequests()
+		.antMatchers(HttpMethod.GET, "/hello").hasRole("ADMIN")
+		.and()
+		.csrf().disable();
+		
+	}
+	
 }

@@ -2,7 +2,7 @@ package br.com.hyperclass.onauction.domain.user;
 
 public class Login {
 	
-	private String username;
+	private final String username;
 	private String password;
 	
 	public Login(final String username, final String password) {

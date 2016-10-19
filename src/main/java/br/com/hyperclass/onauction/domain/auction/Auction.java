@@ -14,8 +14,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.stereotype.Component;
-
 import br.com.hyperclass.onauction.domain.batch.Batch;
 import br.com.hyperclass.onauction.domain.batch.InvalidOperationBatchException;
 import br.com.hyperclass.onauction.domain.batch.NoBatchIsOpenException;
@@ -26,11 +24,15 @@ import br.com.hyperclass.onauction.domain.user.Buyer;
  * @author Marcelo Inácio
  *
  */
-@Component
 public class Auction {
 	
+	private final Map<String, Buyer> buyers = new HashMap<>();
 	private final Map<Integer, Batch> batchMap = new HashMap<>();
 	private Batch currentBatch = null;
+	
+	public Auction(final Map<String, Buyer> buyers) {
+		this.buyers.putAll(buyers);
+	}
 	
 	public void createBatch(final Batch newBatch) {
 		batchMap.put(newBatch.getCode(), newBatch);
@@ -55,7 +57,8 @@ public class Auction {
 		return currentBatch;
 	}
 	
-	public void toBid(final Buyer buyer, final double value) throws AuctionException {
+	public void toBid(final String buyerCode, final double value) throws AuctionException {
+		final Buyer buyer = buyers.get(buyerCode);
 		if(currentBatch == null) {
 			throw new NoBatchIsOpenException();
 		}
@@ -75,6 +78,9 @@ public class Auction {
 		if(batch == null) {
 			throw new NotFoundBatchException();
 		}
+		if(currentBatch != null) {
+			throw new InvalidOperationBatchException();
+		}
 		currentBatch = batch;
 		currentBatch.open();
 	}
@@ -88,7 +94,8 @@ public class Auction {
 	public Collection<Batch> getAllBatchesByDate(final Date startDate, final Date endDate) {
 		final List<Batch> allBatchesBetweenDates = new ArrayList<>();
 		for(final Batch batch : batchMap.values()) {
-			if(isBetweenDates(startDate, endDate, batch.getDate())) allBatchesBetweenDates.add(batch);
+			if(isBetweenDates(startDate, endDate, batch.getDate())) 
+				allBatchesBetweenDates.add(batch);
 		}
 		return allBatchesBetweenDates;
 	}

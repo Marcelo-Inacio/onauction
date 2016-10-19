@@ -24,9 +24,6 @@ public abstract class User implements Serializable {
 	private final Login login;
 	private final ProfileType profile;
 	
-	@Autowired
-	protected Auction auction;
-	
 	protected User(final String name, final Login login, final ProfileType profile) {
 		this.name = name;
 		this.login = login;

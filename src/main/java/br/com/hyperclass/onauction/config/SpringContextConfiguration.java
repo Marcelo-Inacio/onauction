@@ -9,6 +9,7 @@ package br.com.hyperclass.onauction.config;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 /**
  * A classe <code>SpringContextConfiguration</code> representa a configuracao do
  * contexto do Spring da aplicacao.
@@ -16,6 +17,6 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @ComponentScan("br.com.hyperclass.onauction.util")
-//@Import(CaixaEletronicoBeans.class)
+@Import(OnAuctionBeans.class)
 public class SpringContextConfiguration {
 }

@@ -27,7 +27,7 @@ public class Batch {
 	private final Product product;
 	private final LinkedList<BidEvent> bidEvents = new LinkedList<>();
 	private final double interval;
-	private final Date date;
+	private Date date;
 	
 	public Batch(final int code, final Product product, final double minimumValue, final double interval) {
 		this.code = code;
@@ -35,7 +35,6 @@ public class Batch {
 		this.product = product;
 		this.bidEvents.add(new InitialBidEvent(minimumValue));
 		this.interval = interval;
-		this.date = new Date();
 	}
 	
 	public void toBid(final Buyer buyer, final double value) throws AuctionException {
@@ -50,7 +49,8 @@ public class Batch {
 		if(!status.equals(StatusBatch.CREATED)) {
 			throw new InvalidOperationBatchException();
 		}
-		this.status = StatusBatch.OPEN;			
+		this.status = StatusBatch.OPEN;
+		this.date = new Date();
 	}
 	
 	public void close() throws AuctionException {
@@ -70,8 +70,8 @@ public class Batch {
 		return code;
 	}
 	
-	public Product getProduct() {
-		return product;
+	public String getProduct() {
+		return product.getDescription();
 	}
 	
 	public List<BidEvent> getBidEvents() {
@@ -84,6 +84,10 @@ public class Batch {
 	
 	public Date getDate() {
 		return new Date(date.getTime());
+	}
+	
+	public String getStatus() {
+		return status.name();
 	}
 
 }
