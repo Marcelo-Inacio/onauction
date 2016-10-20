@@ -6,8 +6,15 @@
  */
 package br.com.hyperclass.onauction.domain.user;
 
-public enum ProfileType {
+import org.springframework.security.core.GrantedAuthority;
+
+public enum ProfileType implements GrantedAuthority {
 	
 	ADMIN, AUCTIONNER, BUYER;
+
+	@Override
+	public String getAuthority() {
+		return this.name();
+	}
 
 }

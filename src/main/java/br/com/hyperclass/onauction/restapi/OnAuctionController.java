@@ -47,21 +47,21 @@ public class OnAuctionController {
 	}
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@RequestMapping(value = "batch/{batchCode}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/batch/{batchCode}", method = RequestMethod.DELETE)
 	public ResponseEntity<?> removeBatch(final int batchCode) throws AuctionException {
 		auction.removeBatch(batchCode);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
 	@PreAuthorize("hasRole('ROLE_AUCTIONEER')")
-	@RequestMapping(value = "batch/{batchCode}/open", method = RequestMethod.POST)
+	@RequestMapping(value = "/batch/{batchCode}/open", method = RequestMethod.POST)
 	public ResponseEntity<?> openBatch(@PathVariable("batchCode") final int batchCode) throws AuctionException {
 		auction.openBatch(batchCode);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
 	@PreAuthorize("hasRole('ROLE_AUCTIONEER')")
-	@RequestMapping(value = "batch/close", method = RequestMethod.POST)
+	@RequestMapping(value = "/batch/close", method = RequestMethod.POST)
 	public ResponseEntity<?> closeBatch() throws AuctionException {
 		auction.closeBatch();
 		return new ResponseEntity<>(HttpStatus.OK);
