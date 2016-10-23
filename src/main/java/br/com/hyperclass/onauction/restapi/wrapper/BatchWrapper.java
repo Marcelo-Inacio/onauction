@@ -3,8 +3,7 @@ package br.com.hyperclass.onauction.restapi.wrapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import br.com.hyperclass.onauction.domain.batch.Product;
-import br.com.hyperclass.onauction.domain.batch.StatusBatch;
+import br.com.hyperclass.onauction.domain.batch.Batch;
 import br.com.hyperclass.onauction.restapi.serializer.BatchDeserializer;
 import br.com.hyperclass.onauction.restapi.serializer.BatchSerializer;
 
@@ -12,37 +11,34 @@ import br.com.hyperclass.onauction.restapi.serializer.BatchSerializer;
 @JsonSerialize(using = BatchSerializer.class)
 public class BatchWrapper {
 	
-	private int code;
-	private StatusBatch status;
-	private final Product product;
-	private final double interval;
-	private final double minimumValue;
+	private final Batch batch;
 	
-	public BatchWrapper(final int code, final Product product, final double minimumValue, final double interval) {
-		this.code = code;
-		this.product = product;
-		this.interval = interval;
-		this.minimumValue = minimumValue;
+	public BatchWrapper(final Batch batch) {
+		this.batch = batch;
 	}
 	
-	public int getCode() {
-		return code;
+	public Batch getBatch() {
+		return batch;
 	}
 	
-	public String getStatus() {
-		return status.name();
+	public int code() {
+		return batch.getCode();
 	}
 	
-	public String getProduct() {
-		return product.getDescription();
+	public String status() {
+		return batch.getStatus();
 	}
 	
-	public double getInterval() {
-		return interval;
+	public String product() {
+		return batch.getProduct();
 	}
 	
-	public double getminimumValue() {
-		return minimumValue;
+	public Double valueInterval() {
+		return batch.getValueInterval();
+	}
+	
+	public Double initialValue() {
+		return batch.getInitialValue();
 	}
 
 }

@@ -6,19 +6,9 @@
  */
 package br.com.hyperclass.onauction.domain.user;
 
-import java.util.ArrayList;
-/**
- * A classe <code>User</code> e uma abstracao.
- * @author Marcelo
- *
- */
-import java.util.Collection;
-import java.util.List;
+import java.io.Serializable;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
-public abstract class User implements UserDetails {
+public abstract class User implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -38,43 +28,6 @@ public abstract class User implements UserDetails {
 	
 	public ProfileType getProfile() {
 		return profile;
-	}
-	
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		final List<GrantedAuthority> auth = new ArrayList<>();
-		auth.add(profile);
-		return auth;
-	}
-
-	@Override
-	public String getPassword() {
-		return login.getPassword();
-	}
-
-	@Override
-	public String getUsername() {
-		return login.getUsername();
-	}
-
-	@Override
-	public boolean isAccountNonExpired() {
-		return true;
-	}
-
-	@Override
-	public boolean isAccountNonLocked() {
-		return true;
-	}
-
-	@Override
-	public boolean isCredentialsNonExpired() {
-		return true;
-	}
-
-	@Override
-	public boolean isEnabled() {
-		return true;
 	}
 
 }

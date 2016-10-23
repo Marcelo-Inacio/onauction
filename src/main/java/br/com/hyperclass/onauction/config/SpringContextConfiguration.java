@@ -16,7 +16,8 @@ import org.springframework.context.annotation.Import;
  * 
  */
 @Configuration
-@ComponentScan("br.com.hyperclass.onauction.util")
-@Import(OnAuctionBeans.class)
+@ComponentScan({"br.com.hyperclass.onauction.util", "br.com.hyperclass.onauction.domain.batch", 
+	"br.com.hyperclass.onauction.application"})
+@Import({OnAuctionBeans.class, SecurityConfig.class})
 public class SpringContextConfiguration {
 }

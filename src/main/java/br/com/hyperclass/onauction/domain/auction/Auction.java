@@ -6,15 +6,14 @@
  */
 package br.com.hyperclass.onauction.domain.auction;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import br.com.hyperclass.onauction.domain.batch.Batch;
+import br.com.hyperclass.onauction.domain.batch.BatchRepository;
 import br.com.hyperclass.onauction.domain.batch.InvalidOperationBatchException;
 import br.com.hyperclass.onauction.domain.batch.NoBatchIsOpenException;
 import br.com.hyperclass.onauction.domain.batch.NotFoundBatchException;
@@ -26,28 +25,32 @@ import br.com.hyperclass.onauction.domain.user.Buyer;
  */
 public class Auction {
 	
+	private BatchRepository repository;
 	private final Map<String, Buyer> buyers = new HashMap<>();
-	private final Map<Integer, Batch> batchMap = new HashMap<>();
 	private Batch currentBatch = null;
 	
 	public Auction(final Map<String, Buyer> buyers) {
+		this.buyers.clear();
 		this.buyers.putAll(buyers);
 	}
 	
-	public void createBatch(final Batch newBatch) {
-		batchMap.put(newBatch.getCode(), newBatch);
+	public Batch createBatch(final Batch newBatch) {
+		return repository.save(newBatch);
 	}
 	
 	public void removeBatch(final int code) throws AuctionException {
-		final Batch batch = batchMap.get(code);
-		if(batch == null || !batch.isCreated()) {
-			throw new InvalidOperationBatchException();
+		final Batch batch = repository.findById(code);
+		if(batch == null) {
+			throw new NotFoundBatchException();
 		}
-		batchMap.remove(code);
+		if(!batch.isCreated()) {
+			throw new InvalidOperationBatchException();			
+		}
+		repository.delete(code);
 	}
 	
 	public Collection<Batch> getAllBatches() {
-		return Collections.unmodifiableCollection(batchMap.values());
+		return repository.findAll();
 	}
 	
 	public Batch getCurrentBatch() throws AuctionException {
@@ -74,7 +77,7 @@ public class Auction {
 	}
 	
 	public void openBatch(final int code) throws AuctionException {
-		final Batch batch = batchMap.get(code); 
+		final Batch batch = repository.findById(code); 
 		if(batch == null) {
 			throw new NotFoundBatchException();
 		}
@@ -85,23 +88,25 @@ public class Auction {
 		currentBatch.open();
 	}
 	
-/**
- * Método que recupera todos os lotes entre datas determinada.
- * @param startDate
- * @param endDate
- * @return
- */
-	public Collection<Batch> getAllBatchesByDate(final Date startDate, final Date endDate) {
-		final List<Batch> allBatchesBetweenDates = new ArrayList<>();
-		for(final Batch batch : batchMap.values()) {
-			if(isBetweenDates(startDate, endDate, batch.getDate())) 
-				allBatchesBetweenDates.add(batch);
+	public double getLastBidValue() throws AuctionException {
+		if(currentBatch == null) {
+			throw new NotFoundBatchException();
 		}
-		return allBatchesBetweenDates;
+		return currentBatch.getLastBidValue();
 	}
 	
-	private boolean isBetweenDates(final Date beforeDate, final Date afterDate, final Date currentDate) {
-		return currentDate.before(beforeDate) && currentDate.after(afterDate);
+	/**
+	 * Método que recupera todos os lotes que ocorreram em uma determinada data.
+	 * @param startDate
+	 * @return
+	 */
+	public Collection<Batch> getAllBatchesByDate(final String date) {
+		return repository.findByDate(date);
 	}
-
+	
+	@Autowired
+	public void setBatchRepository(final BatchRepository batchRepository) {
+		this.repository = batchRepository;
+	}
+	
 }

@@ -6,8 +6,10 @@
  */
 package br.com.hyperclass.onauction.domain.batch;
 
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -18,31 +20,37 @@ import br.com.hyperclass.onauction.domain.batch.events.CommonBidEvent;
 import br.com.hyperclass.onauction.domain.batch.events.FinishBidEvent;
 import br.com.hyperclass.onauction.domain.batch.events.InitialBidEvent;
 import br.com.hyperclass.onauction.domain.user.Buyer;
+/**
+ * A classe <code>Batch</code> é uma entidade que representa o lote de produto 
+ * a ser leiloado no leilao.
+ * 
+ * @author Marcelo
+ *
+ */
+public class Batch implements Serializable {
 
-
-public class Batch {
+	private static final long serialVersionUID = 1L;
 	
 	private int code;
 	private StatusBatch status;
-	private final Product product;
+	private Product product;
 	private final LinkedList<BidEvent> bidEvents = new LinkedList<>();
-	private final double interval;
-	private Date date;
+	private double valueInterval;
+	private LocalDate date;
 	
-	public Batch(final int code, final Product product, final double minimumValue, final double interval) {
-		this.code = code;
+	public Batch(final Product product, final double InitialBid, final double valueInterval) {
 		this.status = StatusBatch.CREATED;
 		this.product = product;
-		this.bidEvents.add(new InitialBidEvent(minimumValue));
-		this.interval = interval;
+		this.bidEvents.add(new InitialBidEvent(InitialBid));
+		this.valueInterval = valueInterval;
 	}
 	
-	public void toBid(final Buyer buyer, final double value) throws AuctionException {
-		final BidEvent bid = bidEvents.getLast();
-		if((bid.getValue() % value) != 0) {
-			throw new BidInvalidException(value);
+	public void toBid(final Buyer buyer, final double bidValue) throws AuctionException {
+		final BidEvent lastBid = bidEvents.getLast();
+		if((bidValue % valueInterval != 0) || bidValue < lastBid.getValue()) {
+			throw new BidInvalidException(bidValue);
 		}
-		bidEvents.add(new CommonBidEvent(buyer, value));
+		bidEvents.add(new CommonBidEvent(buyer, bidValue));
 	}
 	
 	public void open() throws AuctionException {
@@ -50,7 +58,7 @@ public class Batch {
 			throw new InvalidOperationBatchException();
 		}
 		this.status = StatusBatch.OPEN;
-		this.date = new Date();
+		this.date = LocalDate.now();
 	}
 	
 	public void close() throws AuctionException {
@@ -78,16 +86,29 @@ public class Batch {
 		return Collections.unmodifiableList(bidEvents);
 	}
 	
-	public double getInerval() {
-		return interval;
+	public double getValueInterval() {
+		return valueInterval;
 	}
 	
-	public Date getDate() {
-		return new Date(date.getTime());
+	public String getDate() {
+		final DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+		return date.format(format);
 	}
 	
 	public String getStatus() {
 		return status.name();
+	}
+	
+	public double getLastBidValue() {
+		return bidEvents.getLast().getValue();
+	}
+	
+	public double getInitialValue() {
+		return bidEvents.getFirst().getValue();
+	}
+	
+	public void setCode(final int code) {
+		this.code = code;
 	}
 
 }

@@ -6,22 +6,24 @@
  */
 package br.com.hyperclass.onauction.restapi;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.hyperclass.onauction.domain.auction.Auction;
+import br.com.hyperclass.onauction.application.OnAuctionApplication;
 import br.com.hyperclass.onauction.domain.auction.AuctionException;
 import br.com.hyperclass.onauction.domain.batch.Batch;
-import br.com.hyperclass.onauction.domain.batch.Product;
 import br.com.hyperclass.onauction.restapi.wrapper.BatchWrapper;
+import br.com.hyperclass.onauction.restapi.wrapper.BatchWrapperList;
+import br.com.hyperclass.onauction.restapi.wrapper.BidWrapper;
 /**
  * A classe <code>OnAuctionController</code> contem as rotas de acesso as funcionalidades 
  * da aplicacao.
@@ -30,49 +32,109 @@ import br.com.hyperclass.onauction.restapi.wrapper.BatchWrapper;
  *
  */
 @RestController
-@PreAuthorize("isAuthenticated()")
 public class OnAuctionController {
 	
-	@Autowired
-	private Auction auction;
+	private HttpHeadersBuilder headersBuilder;
+	private OnAuctionApplication auction;
 	
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	/**
+	 * URI responsavel por cadastrar um novo lote de produto no leilao.
+	 * @param batchWrapper
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping(value = "/batch", method = RequestMethod.POST)
-	public ResponseEntity<?> createBatch(@RequestBody final BatchWrapper batchWrapper) {
-		auction.createBatch(new Batch(batchWrapper.getCode(), 
-				new Product(batchWrapper.getProduct()),
-				batchWrapper.getminimumValue(),
-				batchWrapper.getInterval()));
-		return new ResponseEntity<>(HttpStatus.CREATED);
+	public ResponseEntity<BatchWrapper> createBatch(@RequestBody final BatchWrapper batchWrapper, 
+			final HttpServletRequest request) {
+		
+		final Batch batch = auction.createBatch(batchWrapper.getBatch());
+		final BatchWrapper batchWrapperResponse = new BatchWrapper(batch);
+		return new ResponseEntity<>(batchWrapperResponse, getHeaders(batch), HttpStatus.CREATED);
 	}
 	
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	/**
+	 * URI responsavel por excluir um lote de produto do leilao.
+	 * @param batchCode
+	 * @return
+	 * @throws AuctionException
+	 */
 	@RequestMapping(value = "/batch/{batchCode}", method = RequestMethod.DELETE)
-	public ResponseEntity<?> removeBatch(final int batchCode) throws AuctionException {
+	public ResponseEntity<?> removeBatch(@PathVariable("batchCode") final Integer batchCode) throws AuctionException {
 		auction.removeBatch(batchCode);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
-	@PreAuthorize("hasRole('ROLE_AUCTIONEER')")
+	/**
+	 * URI responsavel por iniciar lotes do leilao.
+	 * @param batchCode
+	 * @return
+	 * @throws AuctionException
+	 */
 	@RequestMapping(value = "/batch/{batchCode}/open", method = RequestMethod.POST)
-	public ResponseEntity<?> openBatch(@PathVariable("batchCode") final int batchCode) throws AuctionException {
+	public ResponseEntity<?> openBatch(@PathVariable("batchCode") final Integer batchCode) throws AuctionException {
 		auction.openBatch(batchCode);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
-	@PreAuthorize("hasRole('ROLE_AUCTIONEER')")
+	/**
+	 * URI responsavel por fechar lote que esta aberto no leilao.
+	 * @return
+	 * @throws AuctionException
+	 */
 	@RequestMapping(value = "/batch/close", method = RequestMethod.POST)
 	public ResponseEntity<?> closeBatch() throws AuctionException {
 		auction.closeBatch();
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
-	@PreAuthorize("hasRole('ROLE_BUYER')")
+	/**
+	 * URI responsavel por dar lances no lote de produto em aberto.
+	 * @param buyerCode
+	 * @param bidValue
+	 * @return
+	 * @throws AuctionException
+	 */
 	@RequestMapping(value = "/{buyerCode}/toBid", method = RequestMethod.POST)
 	public ResponseEntity<?> toBid(@PathVariable("buyerCode") final String buyerCode,
-			@RequestParam("bidValue") final double bidValue) throws AuctionException {
-		auction.toBid(buyerCode, bidValue);
+			@RequestBody final BidWrapper bidValue) throws AuctionException {
+		auction.toBid(buyerCode, bidValue.getValue());
 		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	/**
+	 * URI responsavel por recuperar ultimo valor de lance dado no lote de produto
+	 * que esta em andamento.
+	 * @return
+	 * @throws AuctionException
+	 */
+	@RequestMapping(value = "/lastBid", method = RequestMethod.GET)
+	public ResponseEntity<BidWrapper> getLastBid() throws AuctionException {
+		return new ResponseEntity<>(new BidWrapper(auction.getLastBidValue()), HttpStatus.OK);
+	}
+	
+	/**
+	 * URI responsavel por recuperar todos os lotes de produto que ocorreram em um determinada data 
+	 * @param date
+	 * @return
+	 */
+	@RequestMapping(value = "/batches/{date}", method = RequestMethod.GET)
+	public ResponseEntity<BatchWrapperList> getBatchesByDate(@PathVariable("date") final String date) {
+		final BatchWrapperList batchWrapperList = new BatchWrapperList(auction.getAllBatchesByDate(date));
+		return new ResponseEntity<>(batchWrapperList, HttpStatus.OK);
+	}
+	
+	@Autowired
+	public void setOnAuctionApplication(final OnAuctionApplication onAuctionApplication) {
+		this.auction = onAuctionApplication;
+	}
+	
+	@Autowired
+	public void setBuilder(final HttpHeadersBuilder headersBuilder) {
+		this.headersBuilder = headersBuilder;
+	}
+	
+	private HttpHeaders getHeaders(final Batch batch) {
+		return headersBuilder.batchId(batch.getCode()).build();
 	}
 
 }

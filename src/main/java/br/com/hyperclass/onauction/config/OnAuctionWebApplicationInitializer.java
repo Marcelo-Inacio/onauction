@@ -6,20 +6,17 @@
  */
 package br.com.hyperclass.onauction.config;
 
-import javax.servlet.Filter;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 
-import org.springframework.web.WebApplicationInitializer;
-import org.springframework.web.filter.CharacterEncodingFilter;
+import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 /**
  * A classe <code>OnAuctionWebApplicationInitializer</code> representa a configuracao de
  * inicializacao do Spring na aplicacao.
  * 
  */
-public class OnAuctionWebApplicationInitializer extends AbstractAnnotationConfigDispatcherServletInitializer
-		implements WebApplicationInitializer {
+public class OnAuctionWebApplicationInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
 	/** {@inheritDoc} */
 	@Override
@@ -39,7 +36,7 @@ public class OnAuctionWebApplicationInitializer extends AbstractAnnotationConfig
 		return new String[] {"/*"};
 	}
 	
-	/** {@inheritDoc} */
+	/** {@inheritDoc} *//*
 	@Override
     protected Filter[] getServletFilters() {
         final CharacterEncodingFilter encodingFilter = new CharacterEncodingFilter();
@@ -47,7 +44,7 @@ public class OnAuctionWebApplicationInitializer extends AbstractAnnotationConfig
         encodingFilter.setEncoding("UTF-8");
 
         return new Filter[] {encodingFilter};
-    }
+    }*/
 	
 	@Override
     public void onStartup(final ServletContext context) throws ServletException {
