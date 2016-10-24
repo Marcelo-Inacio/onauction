@@ -24,6 +24,7 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.ContentNegotiatingViewResolver;
@@ -93,13 +94,13 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         super.addArgumentResolvers(argumentResolvers);
     }
     
-    /*@Override
-    public void addCorsMappings(CorsRegistry registry) {
+    @Override
+    public void addCorsMappings(final CorsRegistry registry) {
     	registry.addMapping("/*")
-    	//.allowCredentials(true)
+    	.allowCredentials(true)
     	.allowedOrigins("*")
-    	.allowedMethods("GET")
+    	.allowedMethods("GET", "POST", "DELETE")
     	.allowCredentials(true).maxAge(3600);
-    }*/
+    }
 
 }

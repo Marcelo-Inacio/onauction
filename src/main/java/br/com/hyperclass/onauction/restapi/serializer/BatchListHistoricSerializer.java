@@ -9,25 +9,24 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 
 import br.com.hyperclass.onauction.domain.batch.Batch;
-import br.com.hyperclass.onauction.restapi.wrapper.BatchWrapperList;
+import br.com.hyperclass.onauction.restapi.wrapper.BatchWrapperHistoricList;
 
-public class BatchListSerializer extends JsonSerializer<BatchWrapperList> {
+public class BatchListHistoricSerializer extends JsonSerializer<BatchWrapperHistoricList> {
 	
 	private DefaultBatchSerializer defaultBatchSerializer;
 
 	@Override
-	public void serialize(final BatchWrapperList batchWrapperList, final JsonGenerator generator, final SerializerProvider arg2)
+	public void serialize(final BatchWrapperHistoricList batchWrapperHistoric, final JsonGenerator generator, final SerializerProvider arg2)
 			throws IOException {
-
+		
 		generator.writeStartArray();
-		for(final Batch batch : batchWrapperList.getBatchList()){
+		for(final Batch batch : batchWrapperHistoric.getBatchList()){
 			generator.writeStartObject();
 			defaultBatchSerializer.serialize(batch, generator);
-			generator.writeStringField("status", batch.getStatus());
-			generator.writeNumberField("valueInterval", batch.getValueInterval());
+			generator.writeNumberField("finalValue", batch.getLastBidValue());
 			generator.writeEndObject();
 		}
-		generator.writeEndArray();
+		generator.writeEndArray();	
 	}
 	
 	@Autowired
