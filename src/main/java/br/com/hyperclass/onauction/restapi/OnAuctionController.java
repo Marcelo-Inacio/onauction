@@ -133,6 +133,11 @@ public class OnAuctionController {
 		this.headersBuilder = headersBuilder;
 	}
 	
+	/**
+	 * Método responsavel por retornar o location do recurso
+	 * @param batch
+	 * @return
+	 */
 	private HttpHeaders getHeaders(final Batch batch) {
 		return headersBuilder.batchId(batch.getCode()).build();
 	}
