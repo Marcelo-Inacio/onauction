@@ -49,7 +49,7 @@ public class OnAuctionWebApplicationInitializer extends AbstractAnnotationConfig
 	@Override
     public void onStartup(final ServletContext context) throws ServletException {
         super.onStartup(context);
-        //context.addFilter("springSecurityFilterChain", DelegatingFilterProxy.class).addMappingForUrlPatterns(null, false, "/*");
+        context.addFilter("springSecurityFilterChain", DelegatingFilterProxy.class).addMappingForUrlPatterns(null, false, "/*");
     }
 
 }

@@ -29,5 +29,9 @@ public abstract class User implements Serializable {
 	public ProfileType getProfile() {
 		return profile;
 	}
+	
+	public Login getLogin() {
+		return login;
+	}
 
 }
