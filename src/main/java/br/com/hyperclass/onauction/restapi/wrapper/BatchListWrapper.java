@@ -8,11 +8,11 @@ import br.com.hyperclass.onauction.domain.batch.Batch;
 import br.com.hyperclass.onauction.restapi.serializer.BatchListSerializer;
 
 @JsonSerialize(using = BatchListSerializer.class) 
-public class BatchWrapperList  extends AbstractBatchWrapperList {
+public class BatchListWrapper  extends AbstractBatchListWrapper {
 	
 	//private final List<Batch> batchList = new ArrayList<>();
 	
-	public BatchWrapperList(final Collection<Batch> batches) {
+	public BatchListWrapper(final Collection<Batch> batches) {
 		super(batches);
 		//this.batchList.clear();
 		//this.batchList.addAll(batches);

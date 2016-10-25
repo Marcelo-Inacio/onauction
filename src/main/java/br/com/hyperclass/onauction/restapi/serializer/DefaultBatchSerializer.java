@@ -14,10 +14,8 @@ public class DefaultBatchSerializer implements Serializer {
 	public void serializeDefaultValues(final Batch batch, final JsonGenerator generator) throws IOException {
 		
 		generator.writeNumberField("code", batch.getCode());
-		//generator.writeStringField("status", batch.getStatus());
 		generator.writeStringField("product", batch.getProduct());
 		generator.writeNumberField("initialValue", batch.getInitialValue());
-		//generator.writeNumberField("valueInterval", batch.getValueInterval());
 		
 	}
 

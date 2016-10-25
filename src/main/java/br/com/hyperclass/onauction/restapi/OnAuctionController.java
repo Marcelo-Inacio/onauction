@@ -21,10 +21,10 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.hyperclass.onauction.application.OnAuctionApplication;
 import br.com.hyperclass.onauction.domain.auction.AuctionException;
 import br.com.hyperclass.onauction.domain.batch.Batch;
-import br.com.hyperclass.onauction.restapi.wrapper.AbstractBatchWrapperList;
+import br.com.hyperclass.onauction.restapi.wrapper.AbstractBatchListWrapper;
 import br.com.hyperclass.onauction.restapi.wrapper.BatchWrapper;
-import br.com.hyperclass.onauction.restapi.wrapper.BatchWrapperHistoricList;
-import br.com.hyperclass.onauction.restapi.wrapper.BatchWrapperList;
+import br.com.hyperclass.onauction.restapi.wrapper.BatchHistoricListWrapper;
+import br.com.hyperclass.onauction.restapi.wrapper.BatchListWrapper;
 import br.com.hyperclass.onauction.restapi.wrapper.BidWrapper;
 import br.com.hyperclass.onauction.restapi.wrapper.DateWrapper;
 /**
@@ -72,8 +72,8 @@ public class OnAuctionController {
 	 * @return
 	 */
 	@RequestMapping(value = "/batches", method = RequestMethod.GET)
-	public ResponseEntity<AbstractBatchWrapperList> getAllBatches() {
-		final AbstractBatchWrapperList list = new BatchWrapperList(auction.getAllBatches());
+	public ResponseEntity<AbstractBatchListWrapper> getAllBatches() {
+		final AbstractBatchListWrapper list = new BatchListWrapper(auction.getAllBatches());
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 	
@@ -122,7 +122,8 @@ public class OnAuctionController {
 	 */
 	@RequestMapping(value = "/lastBid", method = RequestMethod.GET)
 	public ResponseEntity<BidWrapper> getLastBid() throws AuctionException {
-		return new ResponseEntity<>(new BidWrapper(auction.getLastBidValue()), HttpStatus.OK);
+		final Batch batch = auction.getCurrentBatch();
+		return new ResponseEntity<>(new BidWrapper(auction.getLastBidValue(), batch.getProduct(), batch.getValueInterval()), HttpStatus.OK);
 	}
 	
 	/**
@@ -130,9 +131,9 @@ public class OnAuctionController {
 	 * @param date
 	 * @return
 	 */
-	@RequestMapping(value = "/batches/date", method = RequestMethod.GET)
-	public ResponseEntity<AbstractBatchWrapperList> getBatchesByDate(@RequestBody final DateWrapper date) {
-		final AbstractBatchWrapperList batchWrapperList = new BatchWrapperHistoricList(auction.getAllBatchesByDate(date.getDateFormatPtBr()));
+	@RequestMapping(value = "/batches/date", method = RequestMethod.POST)
+	public ResponseEntity<AbstractBatchListWrapper> getBatchesByDate(@RequestBody final DateWrapper date) {
+		final AbstractBatchListWrapper batchWrapperList = new BatchHistoricListWrapper(auction.getAllBatchesByDate(date.getDateFormatPtBr()));
 		return new ResponseEntity<>(batchWrapperList, HttpStatus.OK);
 	}
 	

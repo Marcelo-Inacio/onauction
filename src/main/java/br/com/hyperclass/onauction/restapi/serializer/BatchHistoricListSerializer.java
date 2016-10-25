@@ -9,14 +9,14 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 
 import br.com.hyperclass.onauction.domain.batch.Batch;
-import br.com.hyperclass.onauction.restapi.wrapper.BatchWrapperHistoricList;
+import br.com.hyperclass.onauction.restapi.wrapper.BatchHistoricListWrapper;
 
-public class BatchListHistoricSerializer extends JsonSerializer<BatchWrapperHistoricList> {
+public class BatchHistoricListSerializer extends JsonSerializer<BatchHistoricListWrapper> {
 	
 	private DefaultBatchSerializer defaultBatchSerializer;
 
 	@Override
-	public void serialize(final BatchWrapperHistoricList batchWrapperHistoric, final JsonGenerator generator, final SerializerProvider arg2)
+	public void serialize(final BatchHistoricListWrapper batchWrapperHistoric, final JsonGenerator generator, final SerializerProvider arg2)
 			throws IOException {
 		
 		generator.writeStartArray();

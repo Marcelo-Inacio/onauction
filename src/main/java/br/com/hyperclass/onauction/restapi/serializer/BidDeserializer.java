@@ -19,7 +19,7 @@ public class BidDeserializer extends JsonDeserializer<BidWrapper> {
 		final ObjectCodec oc = jsonParser.getCodec();
         final JsonNode node = oc.readTree(jsonParser);
         
-		return new BidWrapper(node.get("value").asDouble());
+		return new BidWrapper(node.get("value").asDouble(), null, 0);
 	}
 
 }

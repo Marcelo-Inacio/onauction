@@ -24,10 +24,6 @@ public class BatchSerializer extends JsonSerializer<BatchWrapper> {
 		generator.writeStringField("status", batchWrapper.status());
 		generator.writeNumberField("valueInterval", batchWrapper.valueInterval());
 		generator.writeEndObject();
-		/*generator.writeNumberField("code", batchWrapper.code());
-		generator.writeStringField("product", batchWrapper.product());
-		generator.writeNumberField("initialValue", batchWrapper.initialValue());
-		*/
 		
 	}
 	

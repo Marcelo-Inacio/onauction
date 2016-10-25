@@ -16,6 +16,7 @@ import java.util.List;
 import br.com.hyperclass.onauction.domain.auction.AuctionException;
 import br.com.hyperclass.onauction.domain.batch.events.BidEvent;
 import br.com.hyperclass.onauction.domain.batch.events.BidInvalidException;
+import br.com.hyperclass.onauction.domain.batch.events.BidTypeEvent;
 import br.com.hyperclass.onauction.domain.batch.events.CommonBidEvent;
 import br.com.hyperclass.onauction.domain.batch.events.FinishBidEvent;
 import br.com.hyperclass.onauction.domain.batch.events.InitialBidEvent;
@@ -36,7 +37,7 @@ public class Batch implements Serializable {
 	private Product product;
 	private final LinkedList<BidEvent> bidEvents = new LinkedList<>();
 	private double valueInterval;
-	private LocalDate date;
+	private LocalDate date = null;
 	
 	public Batch(final Product product, final double InitialBid, final double valueInterval) {
 		this.status = StatusBatch.CREATED;
@@ -65,9 +66,14 @@ public class Batch implements Serializable {
 		if(!status.equals(StatusBatch.OPEN)) {
 			throw new InvalidOperationBatchException();
 		}
-		final CommonBidEvent lastBid = (CommonBidEvent) bidEvents.getLast();
-		bidEvents.add(new FinishBidEvent(lastBid.getBuyer(), lastBid.getValue()));
 		this.status = StatusBatch.CLOSED;
+		final BidEvent lastBidEvent = bidEvents.getLast();
+		if(lastBidEvent.getType() != BidTypeEvent.INITIAL) {
+			final CommonBidEvent lastCommonBidEvent = (CommonBidEvent) lastBidEvent;
+			bidEvents.add(new FinishBidEvent(lastCommonBidEvent.getBuyer(), lastCommonBidEvent.getValue()));
+		} else {
+			bidEvents.add(new FinishBidEvent(null, lastBidEvent.getValue()));			
+		}
 	}
 	
 	public boolean isCreated() {
@@ -91,6 +97,9 @@ public class Batch implements Serializable {
 	}
 	
 	public String getDate() {
+		if(date == null) {
+			return "";
+		}
 		final DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 		return date.format(format);
 	}

@@ -16,6 +16,8 @@ public class BidSerializer extends JsonSerializer<BidWrapper> {
 
 		generator.writeStartObject();
 		generator.writeNumberField("value", bidWrapper.getValue());
+		generator.writeStringField("product", bidWrapper.getProduct());
+		generator.writeNumberField("valueInterval", bidWrapper.getValueInterval());
 		generator.writeEndObject();
 		
 	}

@@ -38,7 +38,8 @@ public class BatchRepository implements Repository<Integer, Batch> {
 	public Collection<Batch> findByDate(final String date) {
 		final List<Batch> batchesList = new ArrayList<>();
 		for(final Batch batch : batchMap.values()) {
-			if(batch.getDate().equals(date)) {
+			final String dateOfBatch = batch.getDate();
+			if(dateOfBatch.equals(date)) {
 				batchesList.add(batch);
 			}
 		}

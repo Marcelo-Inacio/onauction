@@ -7,11 +7,11 @@ import java.util.List;
 
 import br.com.hyperclass.onauction.domain.batch.Batch;
 
-public abstract class AbstractBatchWrapperList {
+public abstract class AbstractBatchListWrapper {
 	
 	private final List<Batch> batchList = new ArrayList<>();
 	
-	public AbstractBatchWrapperList(final Collection<Batch> batches) {
+	public AbstractBatchListWrapper(final Collection<Batch> batches) {
 		this.batchList.clear();
 		this.batchList.addAll(batches);
 	}

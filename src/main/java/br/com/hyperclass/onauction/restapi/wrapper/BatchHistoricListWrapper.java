@@ -5,14 +5,14 @@ import java.util.Collection;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import br.com.hyperclass.onauction.domain.batch.Batch;
-import br.com.hyperclass.onauction.restapi.serializer.BatchListHistoricSerializer;
+import br.com.hyperclass.onauction.restapi.serializer.BatchHistoricListSerializer;
 
-@JsonSerialize(using = BatchListHistoricSerializer.class)
-public class BatchWrapperHistoricList extends AbstractBatchWrapperList {
+@JsonSerialize(using = BatchHistoricListSerializer.class)
+public class BatchHistoricListWrapper extends AbstractBatchListWrapper {
 	
 	//private final List<Batch> batchList = new ArrayList<>();
 	
-	public BatchWrapperHistoricList(final Collection<Batch> batches) {
+	public BatchHistoricListWrapper(final Collection<Batch> batches) {
 		super(batches);
 		//this.batchList.clear();
 		//this.batchList.addAll(batches);
