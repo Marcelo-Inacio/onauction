@@ -18,7 +18,8 @@ import org.springframework.context.annotation.Import;
 @Configuration
 @ComponentScan({"br.com.hyperclass.onauction.util", "br.com.hyperclass.onauction.domain.batch", 
 	"br.com.hyperclass.onauction.application", "br.com.hyperclass.onauction.restapi.serializer",
-	"br.com.hyperclass.onauction.authentication"})
+	"br.com.hyperclass.onauction.domain.user",
+	"br.com.hyperclass.onauction.authentication", "br.com.hyperclass.onauction.authentication.jwt"})
 @Import({OnAuctionBeans.class, SecurityConfig.class})
 public class SpringContextConfiguration {
 }

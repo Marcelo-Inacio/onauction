@@ -6,38 +6,27 @@
  */
 package br.com.hyperclass.onauction.config;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import javax.servlet.Filter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.nimbusds.jose.JOSEException;
-
-import br.com.hyperclass.onauction.authentication.AuthenticationListener;
 import br.com.hyperclass.onauction.authentication.PreAuthenticatedUserFilter;
-import br.com.hyperclass.onauction.authentication.jwt.JwtSignatureVerifier;
-import br.com.hyperclass.onauction.authentication.jwt.JwtVerifier;
+import br.com.hyperclass.onauction.authentication.custom.TokenAuthenticationService;
 
 /**
  * A classe <code>SecurityConfig</code> representa a configuracao de seguranca
@@ -52,52 +41,34 @@ import br.com.hyperclass.onauction.authentication.jwt.JwtVerifier;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
-    @Qualifier("jwtAuthenticationManager")
-    private AuthenticationManager jwtAuthenticationManager;
-	
-	@Autowired
-    private AuthenticationSuccessHandler successHandler;
-	
+	@Qualifier("jwtAuthenticationManager")
+	private AuthenticationManager jwtAuthenticationManager;
+
 	@Autowired
     @Qualifier("providerManager")
     private AuthenticationManager providerManager;
-
-
-	public void configureGlobal(final AuthenticationManagerBuilder auth) throws Exception {
-		auth.inMemoryAuthentication()
-			.withUser("user") // #1
-			.password("password").roles("USER").and()
-			.withUser("admin") // #2
-			.password("password").roles("ADMIN", "USER");
-	}
-
+	
+	@Autowired
+	@Qualifier("defaultUserDetails")
+	private UserDetailsService userDetailsService;
+	
+	@Autowired
+	private TokenAuthenticationService tokenAuthenticationService;
+	
 	@Override
 	protected void configure(final HttpSecurity http) throws Exception {
 		http.addFilter(preAuthenticationFilter());
-        http.addFilter(loginFilter());
-        http.addFilter(anonymousFilter());
-        http.csrf().disable();
-		http.authorizeRequests().regexMatchers(HttpMethod.GET, "/").authenticated();// (HttpMethod.GET, "/hello").hasRole("ADMIN");
-		http.authorizeRequests().anyRequest().authenticated();
-
+		//http.addFilter(loginFilter());
+		http.addFilter(anonymousFilter());
+		http
+		.csrf().disable()
+		.authorizeRequests()
+		.antMatchers("/batch/lastBid").permitAll()
+		.regexMatchers("/batch/*").authenticated()
+		.regexMatchers("/batches").authenticated()
+		.anyRequest().authenticated()
+		.addFilterBefore(new StatelessLoginFilter("/login", tokenAuthenticationService, userDetailsService, authenticationManager()), UsernamePasswordAuthenticationFilter.class);
 	}
-	
-	@Bean
-    public AuthenticationManager providerManager(@Qualifier("defaultAuthenticationProvider") final AuthenticationProvider provider) {
-        return new ProviderManager(Arrays.asList(provider));
-    }
-	
-	@Bean
-    public PasswordEncoder encoder() {
-        return new BCryptPasswordEncoder(5);
-    }
-	
-	@Bean
-    public Filter preAuthenticationFilter() {
-        final PreAuthenticatedUserFilter filter = new PreAuthenticatedUserFilter();
-        filter.setAuthenticationManager(jwtAuthenticationManager);
-        return filter;
-    }
 	
 	@Bean
     public Filter anonymousFilter() {
@@ -105,13 +76,30 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 	
 	@Bean
-    public Filter loginFilter() {
-        final UsernamePasswordAuthenticationFilter filter = new UsernamePasswordAuthenticationFilter();
-        filter.setAuthenticationManager(providerManager);
-        filter.setAuthenticationSuccessHandler(successHandler);
-        //filter.setAuthenticationFailureHandler(failureHandler);
-        return filter;
-    }
+	public Filter preAuthenticationFilter() {
+		final PreAuthenticatedUserFilter filter = new PreAuthenticatedUserFilter();
+		filter.setAuthenticationManager(jwtAuthenticationManager);
+		return filter;
+	}
+	
+	@Bean
+	public Filter loginFilter() {
+		final UsernamePasswordAuthenticationFilter filter = new UsernamePasswordAuthenticationFilter();
+		filter.setAuthenticationManager(providerManager);
+		//filter.setAuthenticationSuccessHandler(successHandler);
+		//filter.setAuthenticationFailureHandler(failureHandler);
+		return filter;
+	}
+	@Bean
+	public AuthenticationManager providerManager(@Qualifier("defaultAuthenticationProvider") final AuthenticationProvider provider) {
+		return new ProviderManager(Arrays.asList(provider));
+	}	
+
+	/*
+	
+	//@Autowired
+    private AuthenticationSuccessHandler successHandler;
+    /*	
 	
 	@Bean
     public List<AuthenticationListener> authenticationListeners(
@@ -125,5 +113,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public JwtVerifier jwtSignatureVerifier(@Value("${jwt.secret}") final String secret) throws JOSEException {
         return new JwtSignatureVerifier(secret);
     }
+*/
 
 }

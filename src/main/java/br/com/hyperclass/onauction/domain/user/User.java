@@ -33,5 +33,13 @@ public abstract class User implements Serializable {
 	public Login getLogin() {
 		return login;
 	}
+	
+	public String getUsername() {
+		return login.getUsername();
+	}
+
+	public String getPassword() {
+		return login.getPassword();
+	}
 
 }

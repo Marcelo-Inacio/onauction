@@ -31,9 +31,10 @@ public class PreAuthenticatedUserFilter extends AbstractPreAuthenticatedProcessi
     @Override
     public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain) throws IOException, ServletException {
         try {
+        	System.out.println("segundo filtro");
             super.doFilter(request, response, chain);
         } finally {
-            SecurityContextHolder.clearContext();
+            //SecurityContextHolder.clearContext();
             
             /*final HttpSession session = httpServletRequest.getSession(false);
             if (session != null) {

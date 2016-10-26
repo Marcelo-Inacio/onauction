@@ -22,7 +22,7 @@ public class DefaultGrantedAuthority implements GrantedAuthority {
 	}
 	
 	public boolean isAdmin() {
-        return role.name().equals(ProfileType.ADMIN);
+        return role.isAdmin();
     }
 
 }

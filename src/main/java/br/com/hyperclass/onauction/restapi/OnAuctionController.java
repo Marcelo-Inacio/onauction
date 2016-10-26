@@ -107,7 +107,7 @@ public class OnAuctionController {
 	 * @return
 	 * @throws AuctionException
 	 */
-	@RequestMapping(value = "/{buyerCode}/toBid", method = RequestMethod.POST)
+	@RequestMapping(value = "/batch/{buyerCode}/toBid", method = RequestMethod.POST)
 	public ResponseEntity<?> toBid(@PathVariable("buyerCode") final String buyerCode,
 			@RequestBody final BidWrapper bidValue) throws AuctionException {
 		auction.toBid(buyerCode, bidValue.getValue());
@@ -120,7 +120,7 @@ public class OnAuctionController {
 	 * @return
 	 * @throws AuctionException
 	 */
-	@RequestMapping(value = "/lastBid", method = RequestMethod.GET)
+	@RequestMapping(value = "/batch/lastBid", method = RequestMethod.GET)
 	public ResponseEntity<BidWrapper> getLastBid() throws AuctionException {
 		final Batch batch = auction.getCurrentBatch();
 		return new ResponseEntity<>(new BidWrapper(auction.getLastBidValue(), batch.getProduct(), batch.getValueInterval()), HttpStatus.OK);

@@ -27,42 +27,42 @@ public class OnAuctionApplication {
 	
 	private Auction auction;
 	
-	//@PreAuthorize("isAuthenticated()")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public Batch createBatch(final Batch newBatch) {
 		return auction.createBatch(newBatch);
 	}
 	
-	//@PreAuthorize("isAuthenticated()")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public void removeBatch(final int code) throws AuctionException {
 		auction.removeBatch(code);
 	}
 	
-	//@PreAuthorize("isAuthenticated()")
+	@PreAuthorize("hasAnyRole({'ROLE_AUCTIONNER', 'ROLE_ADMIN', 'ROLE_ANONYMOUS'})")
 	public Collection<Batch> getAllBatches() {
 		return auction.getAllBatches();
 	}
 	
-	//@PreAuthorize("isAuthenticated()")
+	
 	public Batch getCurrentBatch() throws AuctionException {
 		return auction.getCurrentBatch();
 	}
 
-	//@PreAuthorize("isAuthenticated()")
+	@PreAuthorize("hasRole('ROLE_BUYER')")
 	public void toBid(final String buyerCode, final double value) throws AuctionException {
 		auction.toBid(buyerCode, value);
 	}
 	
-	//@PreAuthorize("isAuthenticated()")
+	@PreAuthorize("hasRole('ROLE_AUCTIONNER')")
 	public void closeBatch() throws AuctionException {
 		auction.closeBatch();
 	}
 	
-	//@PreAuthorize("isAuthenticated()")
+	@PreAuthorize("hasRole('ROLE_AUCTIONNER')")
 	public void openBatch(final int code) throws AuctionException {
 		auction.openBatch(code);
 	}
 	
-	//@PreAuthorize("isAuthenticated()")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public Collection<Batch> getAllBatchesByDate(final String date) {
 		return auction.getAllBatchesByDate(date);
 	}

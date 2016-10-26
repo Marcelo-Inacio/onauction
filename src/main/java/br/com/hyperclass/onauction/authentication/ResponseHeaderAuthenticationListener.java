@@ -19,7 +19,7 @@ import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 
-@Component
+//@Component
 public class ResponseHeaderAuthenticationListener implements AuthenticationListener {
 	
 	private static final long FIVE_HOURS_IN_MILLISECONDS = 60000 * 300;

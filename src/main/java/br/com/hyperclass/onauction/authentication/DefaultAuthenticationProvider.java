@@ -1,31 +1,32 @@
 package br.com.hyperclass.onauction.authentication;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
 
+import br.com.hyperclass.onauction.domain.user.User;
 import br.com.hyperclass.onauction.domain.user.UserRepository;
 
 @Component
-public class DefaultAuthenticationProvider extends DaoAuthenticationProvider {
+public class DefaultAuthenticationProvider implements AuthenticationProvider {
 	
 	private final UserRepository repository;
-
-    @Autowired
-    public DefaultAuthenticationProvider(final UserRepository repository, final UserDetailsService service, final PasswordEncoder encoder) {
-        super();
-        setUserDetailsService(service);
-        setPasswordEncoder(encoder);
+	
+	public DefaultAuthenticationProvider(final UserRepository repository) {
         this.repository = repository;
     }
 
-    @Override
-    protected Authentication createSuccessAuthentication(final Object principal, final Authentication authentication, final UserDetails userDetails) {
-        return new PreAuthenticatedAuthentication(repository.getByUsername(((UserDetails) principal).getUsername()));
-    }
+	@Override
+	public Authentication authenticate(final Authentication authentication) throws AuthenticationException {
+		final User user = repository.getByUsername(authentication.getName());
+		return new PreAuthenticatedAuthentication(user);
+	}
+
+	@Override
+	public boolean supports(Class<?> arg0) {
+		// TODO Auto-generated method stub
+		return true;
+	}
 
 }
