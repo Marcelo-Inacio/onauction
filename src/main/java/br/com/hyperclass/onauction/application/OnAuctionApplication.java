@@ -37,11 +37,10 @@ public class OnAuctionApplication {
 		auction.removeBatch(code);
 	}
 	
-	@PreAuthorize("hasAnyRole({'ROLE_AUCTIONNER', 'ROLE_ADMIN', 'ROLE_ANONYMOUS'})")
+	@PreAuthorize("hasAnyRole({'ROLE_ADMIN', 'ROLE_AUCTIONEER'})")
 	public Collection<Batch> getAllBatches() {
 		return auction.getAllBatches();
 	}
-	
 	
 	public Batch getCurrentBatch() throws AuctionException {
 		return auction.getCurrentBatch();

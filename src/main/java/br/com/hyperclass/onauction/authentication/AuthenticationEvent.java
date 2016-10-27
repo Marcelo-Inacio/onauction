@@ -1,11 +1,11 @@
 package br.com.hyperclass.onauction.authentication;
 
-import java.security.Principal;
-
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
 import org.springframework.security.core.Authentication;
+
+import br.com.hyperclass.onauction.domain.user.User;
 
 public class AuthenticationEvent extends AuthenticationSuccessEvent {
 
@@ -30,8 +30,8 @@ public class AuthenticationEvent extends AuthenticationSuccessEvent {
         return response;
     }
 
-    private Principal getUser() {
-        return null;//getAuthentication().getPrincipal();
+    private User getUser() {
+        return getAuthentication().getPrincipal();
     }
 
 }

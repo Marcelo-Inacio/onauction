@@ -24,9 +24,8 @@ public class DefaultAuthenticationProvider implements AuthenticationProvider {
 	}
 
 	@Override
-	public boolean supports(Class<?> arg0) {
-		// TODO Auto-generated method stub
-		return true;
+	public boolean supports(Class<?> authentication) {
+		return true;//authentication.equals(PreAuthenticatedAuthentication.class);
 	}
 
 }

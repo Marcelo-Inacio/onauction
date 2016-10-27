@@ -19,7 +19,7 @@ import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 
-//@Component
+@Component
 public class ResponseHeaderAuthenticationListener implements AuthenticationListener {
 	
 	private static final long FIVE_HOURS_IN_MILLISECONDS = 60000 * 300;
@@ -38,12 +38,9 @@ public class ResponseHeaderAuthenticationListener implements AuthenticationListe
 				.subject(event.getUsername())
 				.issueTime(new Date(now))
 				.issuer("http://www.onauction.com")
+				.expirationTime(new Date(now + FIVE_HOURS_IN_MILLISECONDS))
+				.notBeforeTime(new Date(now))
 				.build();
-        //claimsSet.setSubject(event.getUsername());
-        //claimsSet.setIssueTime(new Date(now));
-        //claimsSet.setIssuer("http://www.onauction.com");
-        //claimsSet.setExpirationTime(new Date(now + FIVE_HOURS_IN_MILLISECONDS));
-        //claimsSet.setNotBeforeTime(new Date(now));
 
         final SignedJWT signedJWT = new SignedJWT(new JWSHeader(JWSAlgorithm.HS256), claimsSet);
 

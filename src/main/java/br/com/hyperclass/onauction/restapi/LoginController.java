@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.hyperclass.onauction.restapi.wrapper.LoginWrapper;
 
-@RestController
+//@RestController
 public class LoginController {
 	
 	@PreAuthorize("isAuthenticated()")

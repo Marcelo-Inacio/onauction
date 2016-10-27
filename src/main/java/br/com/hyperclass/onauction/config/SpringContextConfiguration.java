@@ -7,9 +7,12 @@
 package br.com.hyperclass.onauction.config;
 
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 /**
  * A classe <code>SpringContextConfiguration</code> representa a configuracao do
  * contexto do Spring da aplicacao.
@@ -20,6 +23,13 @@ import org.springframework.context.annotation.Import;
 	"br.com.hyperclass.onauction.application", "br.com.hyperclass.onauction.restapi.serializer",
 	"br.com.hyperclass.onauction.domain.user",
 	"br.com.hyperclass.onauction.authentication", "br.com.hyperclass.onauction.authentication.jwt"})
+@PropertySource("classpath:authentication.properties")
 @Import({OnAuctionBeans.class, SecurityConfig.class})
 public class SpringContextConfiguration {
+	
+	@Bean
+    public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
+        return new PropertySourcesPlaceholderConfigurer();
+    }
+	
 }

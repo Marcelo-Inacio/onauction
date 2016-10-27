@@ -7,6 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
@@ -31,16 +32,14 @@ public class PreAuthenticatedUserFilter extends AbstractPreAuthenticatedProcessi
     @Override
     public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain) throws IOException, ServletException {
         try {
-        	System.out.println("segundo filtro");
             super.doFilter(request, response, chain);
         } finally {
-            //SecurityContextHolder.clearContext();
-            
-            /*final HttpSession session = httpServletRequest.getSession(false);
+        	SecurityContextHolder.clearContext();
+            final HttpSession session = ((HttpServletRequest) request).getSession(false);
             if (session != null) {
                 session.removeAttribute("SPRING_SECURITY_CONTEXT");
             }
-            TokenRepository.clear();*/
+            //TokenRepository.clear();
         }
     }
 

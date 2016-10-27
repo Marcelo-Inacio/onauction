@@ -1,6 +1,10 @@
 package br.com.hyperclass.onauction.authentication.jwt;
 
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,7 +23,7 @@ import br.com.hyperclass.onauction.domain.user.UserRepository;
 public class JwtAuthenticationManager implements AuthenticationManager {
 	
 	private final UserRepository repository;
-    //private final List<JwtVerifier> verifiersList = new ArrayList<>();
+    private final List<JwtVerifier> verifiersList = new ArrayList<>();
     
     @Autowired
     public JwtAuthenticationManager(final UserRepository repository) {
@@ -40,18 +44,18 @@ public class JwtAuthenticationManager implements AuthenticationManager {
             throw new JwtTokenException("The given JWT could not be parsed.");
         }
 
-        /*for (final JwtVerifier verifier : verifiersList) {
+        for (final JwtVerifier verifier : verifiersList) {
             verifier.verify(jwt);
-        }*/
+        }
 
         final String username = claims.getSubject();
         return new PreAuthenticatedAuthentication(repository.getByUsername(username));
 	}
 	
-	/*
+	
 	@Resource
     public void setVerifiersList(final List<JwtVerifier> verifiersList) {
         this.verifiersList.addAll(verifiersList);
-    } */
+    }
 
 }
