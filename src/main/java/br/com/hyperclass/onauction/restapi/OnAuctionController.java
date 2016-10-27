@@ -7,6 +7,7 @@
 package br.com.hyperclass.onauction.restapi;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.hyperclass.onauction.application.OnAuctionApplication;
+import br.com.hyperclass.onauction.authentication.jwt.JwtIdentify;
 import br.com.hyperclass.onauction.domain.auction.AuctionException;
 import br.com.hyperclass.onauction.domain.batch.Batch;
 import br.com.hyperclass.onauction.restapi.wrapper.AbstractBatchListWrapper;
@@ -135,6 +137,16 @@ public class OnAuctionController {
 	public ResponseEntity<AbstractBatchListWrapper> getBatchesByDate(@RequestBody final DateWrapper date) {
 		final AbstractBatchListWrapper batchWrapperList = new BatchHistoricListWrapper(auction.getAllBatchesByDate(date.getDateFormatPtBr()));
 		return new ResponseEntity<>(batchWrapperList, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/user/identify", method = RequestMethod.GET)
+	public ResponseEntity<?> getIdentify(final HttpServletRequest request,
+			final HttpServletResponse response) {
+		final String token = request.getHeader("Authorization");
+		final JwtIdentify identification = new JwtIdentify();
+		final String profile = identification.identify(token);
+		response.addHeader("profile", profile);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
 	@Autowired

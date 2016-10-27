@@ -36,6 +36,7 @@ public class ResponseHeaderAuthenticationListener implements AuthenticationListe
 		final long now = System.currentTimeMillis();
 		final JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
 				.subject(event.getUsername())
+				.claim("profile", event.getProfile())
 				.issueTime(new Date(now))
 				.issuer("http://www.onauction.com")
 				.expirationTime(new Date(now + FIVE_HOURS_IN_MILLISECONDS))

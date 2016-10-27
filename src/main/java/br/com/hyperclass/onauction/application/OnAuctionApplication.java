@@ -37,7 +37,7 @@ public class OnAuctionApplication {
 		auction.removeBatch(code);
 	}
 	
-	@PreAuthorize("hasAnyRole({'ROLE_ADMIN', 'ROLE_AUCTIONEER'})")
+	//@PreAuthorize("hasAnyRole({'ROLE_ADMIN', 'ROLE_AUCTIONEER'})")
 	public Collection<Batch> getAllBatches() {
 		return auction.getAllBatches();
 	}

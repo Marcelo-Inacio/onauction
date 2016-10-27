@@ -29,6 +29,10 @@ public class AuthenticationEvent extends AuthenticationSuccessEvent {
     public HttpServletResponse getResponse() {
         return response;
     }
+    
+    public String getProfile() {
+    	return getUser().getProfile().name();
+    }
 
     private User getUser() {
         return getAuthentication().getPrincipal();

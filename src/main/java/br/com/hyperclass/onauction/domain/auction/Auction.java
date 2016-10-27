@@ -8,6 +8,7 @@ package br.com.hyperclass.onauction.domain.auction;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import br.com.hyperclass.onauction.domain.batch.InvalidOperationBatchException;
 import br.com.hyperclass.onauction.domain.batch.NoBatchIsOpenException;
 import br.com.hyperclass.onauction.domain.batch.NotFoundBatchException;
 import br.com.hyperclass.onauction.domain.user.Buyer;
+import br.com.hyperclass.onauction.domain.user.User;
 /**
  * A classe <code>Auction</code> contém as funcionalidades de toda apicacao.
  * @author Marcelo Inácio
@@ -29,9 +31,9 @@ public class Auction {
 	private final Map<String, Buyer> buyers = new HashMap<>();
 	private Batch currentBatch = null;
 	
-	public Auction(final Map<String, Buyer> buyers) {
+	public Auction(final List<User> buyers) {
 		this.buyers.clear();
-		this.buyers.putAll(buyers);
+		loadBuyers(buyers);
 	}
 	
 	public Batch createBatch(final Batch newBatch) {
@@ -61,7 +63,7 @@ public class Auction {
 	}
 	
 	public void toBid(final String buyerCode, final double value) throws AuctionException {
-		final Buyer buyer = buyers.get(buyerCode);
+		final Buyer buyer = (Buyer)buyers.get(buyerCode);
 		if(currentBatch == null) {
 			throw new NoBatchIsOpenException();
 		}
@@ -107,6 +109,18 @@ public class Auction {
 	@Autowired
 	public void setBatchRepository(final BatchRepository batchRepository) {
 		this.repository = batchRepository;
+	}
+	
+	/**
+	 * Método responsável por preencher o mapa com a lista de usuário
+	 * recebida do parâmetro
+	 * @param buyers
+	 */
+	private void loadBuyers(final List<User> users) {
+		for(final User user : users) {
+			final Buyer buyer = (Buyer) user;
+			this.buyers.put(buyer.getCode(), buyer);
+		}
 	}
 	
 }

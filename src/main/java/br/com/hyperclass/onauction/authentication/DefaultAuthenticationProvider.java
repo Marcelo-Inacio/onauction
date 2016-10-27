@@ -24,7 +24,7 @@ public class DefaultAuthenticationProvider implements AuthenticationProvider {
 	}
 
 	@Override
-	public boolean supports(Class<?> authentication) {
+	public boolean supports(final Class<?> authentication) {
 		return true;//authentication.equals(PreAuthenticatedAuthentication.class);
 	}
 

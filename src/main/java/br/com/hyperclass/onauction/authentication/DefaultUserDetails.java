@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import br.com.hyperclass.onauction.domain.user.Login;
+import br.com.hyperclass.onauction.domain.user.ProfileType;
 import br.com.hyperclass.onauction.domain.user.UserRepository;
 
 @Component
@@ -26,8 +27,10 @@ public class DefaultUserDetails implements UserDetailsService {
 			throw new UsernameNotFoundException("User '" + username + "' not found.");
 		}
 		final Login login = user.getLogin();
-		final List<GrantedAuthority> roles = new ArrayList<>(2); 
-		roles.add(new DefaultGrantedAuthority(user.getProfile()));
+		final List<GrantedAuthority> roles = new ArrayList<>(3); 
+		roles.add(new DefaultGrantedAuthority(ProfileType.ADMIN));
+		roles.add(new DefaultGrantedAuthority(ProfileType.AUCTIONNER));
+		roles.add(new DefaultGrantedAuthority(ProfileType.BUYER));
 		return new User(login.getUsername(), login.getUsername(), roles);
 	}
 	

@@ -76,11 +76,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests()
 		//allow anonymous POSTs to login
 		.antMatchers(HttpMethod.POST, "/login").permitAll()
+		.antMatchers(HttpMethod.GET, "/user/*").permitAll()
 		.regexMatchers("/batch/lastBid").permitAll()
 		.regexMatchers("/batch/*").authenticated()
 		.antMatchers("/batches").authenticated()
 		.anyRequest().authenticated();
-		//.addFilterBefore(new StatelessLoginFilter("/login", tokenAuthenticationService, userDetailsService, authenticationManager()), UsernamePasswordAuthenticationFilter.class);
 	}
 	
 	@Bean
