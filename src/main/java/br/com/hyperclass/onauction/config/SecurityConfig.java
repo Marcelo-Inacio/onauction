@@ -26,6 +26,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -72,12 +73,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.addFilter(preAuthenticationFilter());
         http.addFilter(loginFilter());
         http.addFilter(anonymousFilter());
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.csrf().disable();
 		http.authorizeRequests()
 		//allow anonymous POSTs to login
 		.antMatchers(HttpMethod.POST, "/login").permitAll()
 		.antMatchers(HttpMethod.GET, "/user/*").permitAll()
-		.regexMatchers("/batch/lastBid").permitAll()
+		.antMatchers("/batch/lastBid").permitAll()
 		.regexMatchers("/batch/*").authenticated()
 		.antMatchers("/batches").authenticated()
 		.anyRequest().authenticated();

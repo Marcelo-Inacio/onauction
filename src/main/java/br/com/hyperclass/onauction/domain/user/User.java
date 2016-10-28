@@ -7,8 +7,9 @@
 package br.com.hyperclass.onauction.domain.user;
 
 import java.io.Serializable;
+import java.security.Principal;
 
-public abstract class User implements Serializable {
+public abstract class User implements Principal, Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -22,6 +23,7 @@ public abstract class User implements Serializable {
 		this.profile = profile;
 	}
 	
+	@Override
 	public String getName() {
 		return name;
 	}

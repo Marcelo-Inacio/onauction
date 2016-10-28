@@ -1,6 +1,11 @@
+/*
+ * @(#)PreAuthenticatedAuthentication.java 1.0 26/10/2016
+ *
+ * Copyright (c) 2016, hyperCLASS. All rights reserved. hyperCLASS
+ * proprietary/confidential. Use is subject to license terms.
+ */
 package br.com.hyperclass.onauction.authentication;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -14,7 +19,7 @@ public class PreAuthenticatedAuthentication extends PreAuthenticatedAuthenticati
 	private static final long serialVersionUID = 1L;
 
     public PreAuthenticatedAuthentication(final User user) {
-        super(user, Arrays.asList(new DefaultGrantedAuthority(user.getProfile())));
+        super(user, new DefaultGrantedAuthority(user.getProfile()));
         setAuthenticated(true);
     }
 

@@ -27,17 +27,17 @@ public class OnAuctionApplication {
 	
 	private Auction auction;
 	
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("principal.username == 'admin'")
 	public Batch createBatch(final Batch newBatch) {
 		return auction.createBatch(newBatch);
 	}
 	
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("principal.username == 'admin'")
 	public void removeBatch(final int code) throws AuctionException {
 		auction.removeBatch(code);
 	}
 	
-	//@PreAuthorize("hasAnyRole({'ROLE_ADMIN', 'ROLE_AUCTIONEER'})")
+	@PreAuthorize("principal.username == 'admin' or principal.username == 'auctioneer'")
 	public Collection<Batch> getAllBatches() {
 		return auction.getAllBatches();
 	}
@@ -46,22 +46,22 @@ public class OnAuctionApplication {
 		return auction.getCurrentBatch();
 	}
 
-	@PreAuthorize("hasRole('ROLE_BUYER')")
+	@PreAuthorize("principal.username != 'admin' and principal.username != 'auctioneer'")
 	public void toBid(final String buyerCode, final double value) throws AuctionException {
 		auction.toBid(buyerCode, value);
 	}
 	
-	@PreAuthorize("hasRole('ROLE_AUCTIONNER')")
+	@PreAuthorize("principal.username == 'auctioneer'")
 	public void closeBatch() throws AuctionException {
 		auction.closeBatch();
 	}
 	
-	@PreAuthorize("hasRole('ROLE_AUCTIONNER')")
+	@PreAuthorize("principal.username == 'auctioneer'")
 	public void openBatch(final int code) throws AuctionException {
 		auction.openBatch(code);
 	}
 	
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("principal.username == 'admin'")
 	public Collection<Batch> getAllBatchesByDate(final String date) {
 		return auction.getAllBatchesByDate(date);
 	}

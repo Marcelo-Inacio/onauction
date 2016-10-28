@@ -8,7 +8,7 @@ package br.com.hyperclass.onauction.domain.user;
 
 public enum ProfileType {
 	
-	ADMIN, AUCTIONNER, BUYER;
+	ADMIN, AUCTIONEER, BUYER;
 	
 	public boolean isAdmin() {
 		return this.equals(ADMIN);

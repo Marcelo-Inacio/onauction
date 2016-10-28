@@ -119,7 +119,7 @@ public class Auction {
 	private void loadBuyers(final List<User> users) {
 		for(final User user : users) {
 			final Buyer buyer = (Buyer) user;
-			this.buyers.put(buyer.getCode(), buyer);
+			this.buyers.put(buyer.getName(), buyer);
 		}
 	}
 	

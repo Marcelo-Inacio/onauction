@@ -1,3 +1,9 @@
+/*
+ * @(#)ResponseHeaderAuthenticationListener.java 1.0 26/10/2016
+ *
+ * Copyright (c) 2016, hyperCLASS. All rights reserved. hyperCLASS
+ * proprietary/confidential. Use is subject to license terms.
+ */
 package br.com.hyperclass.onauction.authentication;
 
 import java.io.IOException;
@@ -36,7 +42,8 @@ public class ResponseHeaderAuthenticationListener implements AuthenticationListe
 		final long now = System.currentTimeMillis();
 		final JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
 				.subject(event.getUsername())
-				.claim("profile", event.getProfile())
+				.claim("name", event.getUserDomain().getName())
+				.claim("profile", event.getUserDomain().getProfile())
 				.issueTime(new Date(now))
 				.issuer("http://www.onauction.com")
 				.expirationTime(new Date(now + FIVE_HOURS_IN_MILLISECONDS))
@@ -53,6 +60,7 @@ public class ResponseHeaderAuthenticationListener implements AuthenticationListe
 
         final HttpServletResponse resp = event.getResponse();
         resp.setHeader("Authorization", String.format("Bearer %s", signedJWT.serialize()));
+        resp.setHeader("User", String.format("%s %s", event.getUserDomain().getName(), event.getUserDomain().getProfile()));
 	}
 
 }

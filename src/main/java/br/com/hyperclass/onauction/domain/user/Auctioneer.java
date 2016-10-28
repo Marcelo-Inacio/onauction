@@ -11,7 +11,7 @@ public class Auctioneer extends User {
 	private static final long serialVersionUID = 1L;
 
 	public Auctioneer(final String name, final Login login) {
-		super(name, login, ProfileType.AUCTIONNER);
+		super(name, login, ProfileType.AUCTIONEER);
 	}
 	
 }

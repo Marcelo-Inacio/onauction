@@ -1,3 +1,9 @@
+/*
+ * @(#)ReferenceDateClaimsVerifier.java 1.0 26/10/2016
+ *
+ * Copyright (c) 2016, hyperCLASS. All rights reserved. hyperCLASS
+ * proprietary/confidential. Use is subject to license terms.
+ */
 package br.com.hyperclass.onauction.config;
 
 import java.util.ArrayList;
@@ -30,10 +36,10 @@ public class OnAuctionBeans {
 	@Bean
 	public List<User> buyersUsers() {
 		final List<User> buyers = new ArrayList<>();
-		buyers.add(new Buyer("0010", "Helio", new Login("helio","123")));
-		buyers.add(new Buyer("0011", "Sabrina", new Login("sabrina","123")));
-		buyers.add(new Buyer("0012", "Julia", new Login("julia","123")));
-		buyers.add(new Buyer("0013", "Ruy", new Login("ruy","123")));
+		buyers.add(new Buyer("0010", "helio", new Login("helio","123")));
+		buyers.add(new Buyer("0011", "sabrina", new Login("sabrina","123")));
+		buyers.add(new Buyer("0012", "julia", new Login("julia","123")));
+		buyers.add(new Buyer("0013", "ruy", new Login("ruy","123")));
 		return buyers;
 	}
 	

@@ -1,7 +1,12 @@
+/*
+ * @(#)DefaultUserDetails.java 1.0 26/10/2016
+ *
+ * Copyright (c) 2016, hyperCLASS. All rights reserved. hyperCLASS
+ * proprietary/confidential. Use is subject to license terms.
+ */
 package br.com.hyperclass.onauction.authentication;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -12,7 +17,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import br.com.hyperclass.onauction.domain.user.Login;
-import br.com.hyperclass.onauction.domain.user.ProfileType;
 import br.com.hyperclass.onauction.domain.user.UserRepository;
 
 @Component
@@ -27,11 +31,7 @@ public class DefaultUserDetails implements UserDetailsService {
 			throw new UsernameNotFoundException("User '" + username + "' not found.");
 		}
 		final Login login = user.getLogin();
-		final List<GrantedAuthority> roles = new ArrayList<>(3); 
-		roles.add(new DefaultGrantedAuthority(ProfileType.ADMIN));
-		roles.add(new DefaultGrantedAuthority(ProfileType.AUCTIONNER));
-		roles.add(new DefaultGrantedAuthority(ProfileType.BUYER));
-		return new User(login.getUsername(), login.getUsername(), roles);
+		return new User(login.getUsername(), login.getUsername(), Collections.<GrantedAuthority> emptyList());
 	}
 	
 	@Autowired
