@@ -5,7 +5,12 @@
  * proprietary/confidential. Use is subject to license terms.
  */
 package br.com.hyperclass.onauction.domain.user;
-
+/**
+ * A classe <code>Buyer</code> representa um comprador que pode ofertar lances no leilão.
+ * 
+ * @author Marcelo
+ *
+ */
 public class Buyer extends User {
 
 	private static final long serialVersionUID = 1L;

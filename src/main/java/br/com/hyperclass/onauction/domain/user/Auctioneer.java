@@ -5,7 +5,13 @@
  * proprietary/confidential. Use is subject to license terms.
  */
 package br.com.hyperclass.onauction.domain.user;
-
+/**
+ * A classe <code>Auctioneer</code> representa um leiloeiro do leilão que pode
+ * iniciar e encerrar leilões.
+ * 
+ * @author Marcelo
+ *
+ */
 public class Auctioneer extends User {
 
 	private static final long serialVersionUID = 1L;

@@ -6,7 +6,8 @@
  */
 package br.com.hyperclass.onauction.domain.batch.events;
 /**
- * A classe <code>ContextBidEvent</code> 
+ * A classe <code>ContextBidEvent</code> representa o contexto dos lances que ocorrem no leilão.
+ * 
  * @author HyperClass04
  *
  */

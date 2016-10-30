@@ -10,7 +10,13 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 
 import java.net.URI;
-
+/**
+ * A classe <code>HttpHeadersBuilder<code> tem a função de criar  no header do response
+ * a localização do recurso criado.
+ * 
+ * @author Marcelo
+ *
+ */
 @Component
 public class HttpHeadersBuilder extends HttpHeaders {
 

@@ -13,12 +13,18 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 
 import br.com.hyperclass.onauction.restapi.wrapper.BidWrapper;
-
+/**
+ * A classe <code>BidSerializer</code> cuida de serializar o valor do último lance,
+ * produto e o valor do lance inicial para json.
+ *  
+ * @author Marcelo
+ *
+ */
 public class BidSerializer extends JsonSerializer<BidWrapper> {
 
 	@Override
-	public void serialize(final BidWrapper bidWrapper, final JsonGenerator generator, final SerializerProvider arg2)
-			throws IOException {
+	public void serialize(final BidWrapper bidWrapper, final JsonGenerator generator,
+			final SerializerProvider arg2) throws IOException {
 
 		generator.writeStartObject();
 		generator.writeNumberField("value", bidWrapper.getValue());

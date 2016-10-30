@@ -16,14 +16,19 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 
 import br.com.hyperclass.onauction.domain.batch.Batch;
 import br.com.hyperclass.onauction.restapi.wrapper.BatchListWrapper;
-
+/**
+ * A classe <code>BatchListSerializer</code> cuida de serializar para json uma lista de objetos lotes.
+ * 
+ * @author Marcelo
+ *
+ */
 public class BatchListSerializer extends JsonSerializer<BatchListWrapper> {
 	
 	private DefaultBatchSerializer defaultBatchSerializer;
 
 	@Override
-	public void serialize(final BatchListWrapper batchWrapperList, final JsonGenerator generator, final SerializerProvider arg2)
-			throws IOException {
+	public void serialize(final BatchListWrapper batchWrapperList, final JsonGenerator generator,
+			final SerializerProvider arg2) throws IOException {
 
 		generator.writeStartArray();
 		for(final Batch batch : batchWrapperList.getBatchList()){

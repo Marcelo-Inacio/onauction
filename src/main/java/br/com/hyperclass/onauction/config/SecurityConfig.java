@@ -34,6 +34,9 @@ import org.springframework.security.web.authentication.AnonymousAuthenticationFi
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 import com.nimbusds.jose.JOSEException;
 
@@ -70,19 +73,35 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Override
 	protected void configure(final HttpSecurity http) throws Exception {
+		http.addFilter(new CorsFilter(configurationSource()));
 		http.addFilter(preAuthenticationFilter());
         http.addFilter(loginFilter());
         http.addFilter(anonymousFilter());
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.csrf().disable();
 		http.authorizeRequests()
-		//allow anonymous POSTs to login
 		.antMatchers(HttpMethod.POST, "/login").permitAll()
 		.antMatchers(HttpMethod.GET, "/user/*").permitAll()
 		.antMatchers("/batch/lastBid").permitAll()
 		.regexMatchers("/batch/*").authenticated()
 		.antMatchers("/batches").authenticated()
 		.anyRequest().authenticated();
+	}
+	/**
+	 * Método que representa a configuração dos CORS Filter para acesso fora do servidor com
+	 * Spring Security configurado.
+	 * @return
+	 */
+	@Bean
+	public UrlBasedCorsConfigurationSource configurationSource() {
+		final CorsConfiguration config = new CorsConfiguration();
+		config.setAllowCredentials(true);
+		config.addAllowedOrigin("*");
+		config.addAllowedHeader("*");
+		config.addAllowedMethod("*");
+		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", config);
+		return source;
 	}
 	
 	@Bean

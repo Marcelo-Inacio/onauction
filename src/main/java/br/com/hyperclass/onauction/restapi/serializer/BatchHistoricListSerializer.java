@@ -16,7 +16,13 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 
 import br.com.hyperclass.onauction.domain.batch.Batch;
 import br.com.hyperclass.onauction.restapi.wrapper.BatchHistoricListWrapper;
-
+/**
+ * A classe <code>BatchHistoricListSerializer</code> cuida de serializar para json
+ * todos os lotes do leilão que foram leiloados em um data.
+ * 
+ * @author Marcelo
+ *
+ */
 public class BatchHistoricListSerializer extends JsonSerializer<BatchHistoricListWrapper> {
 	
 	private DefaultBatchSerializer defaultBatchSerializer;

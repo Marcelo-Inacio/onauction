@@ -7,8 +7,13 @@
 package br.com.hyperclass.onauction.domain.batch;
 
 import br.com.hyperclass.onauction.domain.auction.AuctionException;
-
-public class NotFoundBatchException extends AuctionException {
+/**
+ * A classe <code>BatchNotFoundException</code> representa, a exceção de que nenhum lote
+ * foi encontrado no leilão.
+ * @author Marcelo
+ *
+ */
+public class BatchNotFoundException extends AuctionException {
 
 	private static final long serialVersionUID = 1L;
 

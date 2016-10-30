@@ -28,7 +28,7 @@ import br.com.hyperclass.onauction.restapi.wrapper.BatchWrapper;
 import br.com.hyperclass.onauction.restapi.wrapper.BidWrapper;
 import br.com.hyperclass.onauction.restapi.wrapper.DateWrapper;
 /**
- * A classe <code>OnAuctionController</code> contem as rotas de acesso as funcionalidades 
+ * A classe <code>OnAuctionController</code> contém as rotas URI's de acesso as funcionalidades 
  * da aplicacao.
  *  
  * @author Marcelo

@@ -45,7 +45,13 @@ public class Batch implements Serializable {
 		this.bidEvents.add(new InitialBidEvent(InitialBid));
 		this.valueInterval = valueInterval;
 	}
-	
+	/**
+	 * Método que cria um evento de um lance ofertado no lote se o valor for maior que
+	 * o ultimo lance e se multiplo do valor de intervalo.
+	 * @param buyer
+	 * @param bidValue
+	 * @throws AuctionException
+	 */
 	public void toBid(final Buyer buyer, final double bidValue) throws AuctionException {
 		final BidEvent lastBid = bidEvents.getLast();
 		if((bidValue % valueInterval != 0) || bidValue < lastBid.getValue()) {
@@ -53,18 +59,27 @@ public class Batch implements Serializable {
 		}
 		bidEvents.add(new CommonBidEvent(buyer, bidValue));
 	}
-	
+	/**
+	 * Método que realiza a mudança de estado do lote para aberto,
+	 * se o mesmo não estiver em andamento
+	 * ou fechado.
+	 * @throws AuctionException
+	 */
 	public void open() throws AuctionException {
 		if(!status.equals(StatusBatch.CREATED)) {
-			throw new InvalidOperationBatchException();
+			throw new InvalidOperationBatchException("Opening");
 		}
 		this.status = StatusBatch.OPEN;
 		this.date = LocalDate.now();
 	}
-	
+	/**
+	 * Método que realiza a mudança de estado do lote para fechado,
+	 * se não estiver com estado em modo criado ou fechado.
+	 * @throws AuctionException
+	 */
 	public void close() throws AuctionException {
 		if(!status.equals(StatusBatch.OPEN)) {
-			throw new InvalidOperationBatchException();
+			throw new InvalidOperationBatchException("Closing");
 		}
 		this.status = StatusBatch.CLOSED;
 		final BidEvent lastBidEvent = bidEvents.getLast();
@@ -75,7 +90,10 @@ public class Batch implements Serializable {
 			bidEvents.add(new FinishBidEvent(null, lastBidEvent.getValue()));			
 		}
 	}
-	
+	/**
+	 * Método que verifica se o estado do lote está criado
+	 * @return
+	 */
 	public boolean isCreated() {
 		return status.equals(StatusBatch.CREATED);
 	}
@@ -87,7 +105,10 @@ public class Batch implements Serializable {
 	public String getProduct() {
 		return product.getDescription();
 	}
-	
+	/**
+	 * Método que recupera todos os eventos que aconteceram no lote.
+	 * @return
+	 */
 	public List<BidEvent> getBidEvents() {
 		return Collections.unmodifiableList(bidEvents);
 	}
@@ -95,7 +116,10 @@ public class Batch implements Serializable {
 	public double getValueInterval() {
 		return valueInterval;
 	}
-	
+	/**
+	 * Método que recupra a data em que o lote foi leiloado já formata. 
+	 * @return
+	 */
 	public String getDate() {
 		if(date == null) {
 			return "";
@@ -107,15 +131,24 @@ public class Batch implements Serializable {
 	public String getStatus() {
 		return status.name();
 	}
-	
+	/**
+	 * Método que recupera o último valor ofertado no lote.
+	 * @return
+	 */
 	public double getLastBidValue() {
 		return bidEvents.getLast().getValue();
 	}
-	
+	/**
+	 * Método que recupera o valor de lance inicial do lote.
+	 * @return
+	 */
 	public double getInitialValue() {
 		return bidEvents.getFirst().getValue();
 	}
-	
+	/**
+	 * Método seta o código do lote quando repositório o cria.
+	 * @param code
+	 */
 	public void setCode(final int code) {
 		this.code = code;
 	}

@@ -17,7 +17,13 @@ import com.fasterxml.jackson.databind.JsonNode;
 import br.com.hyperclass.onauction.domain.batch.Batch;
 import br.com.hyperclass.onauction.domain.batch.Product;
 import br.com.hyperclass.onauction.restapi.wrapper.BatchWrapper;
-
+/**
+ * A classe <code>BatchDeserializer</code> cuida de desserializar
+ * um lote vindo como json do cliente.
+ * 
+ * @author Marcelo
+ *
+ */
 public class BatchDeserializer extends JsonDeserializer<BatchWrapper> {
 
 	@Override

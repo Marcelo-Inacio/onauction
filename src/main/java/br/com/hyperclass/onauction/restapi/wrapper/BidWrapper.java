@@ -11,7 +11,12 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import br.com.hyperclass.onauction.restapi.serializer.BidDeserializer;
 import br.com.hyperclass.onauction.restapi.serializer.BidSerializer;
-
+/**
+ * A classe <code>BidWrapper</code> representa um lance com seu respectivo produto e valor de intervalo.
+ * 
+ * @author Marcelo
+ *
+ */
 @JsonDeserialize(using = BidDeserializer.class)
 @JsonSerialize(using = BidSerializer.class)
 public class BidWrapper {

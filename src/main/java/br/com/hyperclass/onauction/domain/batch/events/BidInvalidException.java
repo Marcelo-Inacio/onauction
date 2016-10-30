@@ -7,7 +7,12 @@
 package br.com.hyperclass.onauction.domain.batch.events;
 
 import br.com.hyperclass.onauction.domain.auction.AuctionException;
-
+/**
+ * A classe <code>BidInvalidException</code> representa e exceção de um lance inválido no leilão.
+ * 
+ * @author Marcelo
+ *
+ */
 public class BidInvalidException extends AuctionException {
 
 	private static final long serialVersionUID = 1L;

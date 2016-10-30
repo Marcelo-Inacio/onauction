@@ -7,7 +7,13 @@
 package br.com.hyperclass.onauction.domain.batch.events;
 
 import br.com.hyperclass.onauction.domain.user.Buyer;
-
+/**
+ * A classe <code>FinishBidEvent</code> representa o último lance ofertado antes
+ * do encerramento do leilão.
+ * 
+ * @author Marcelo
+ *
+ */
 public class FinishBidEvent extends BidEvent {
 
 	private static final long serialVersionUID = 1L;

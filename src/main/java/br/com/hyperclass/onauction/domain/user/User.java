@@ -5,7 +5,12 @@
  * proprietary/confidential. Use is subject to license terms.
  */
 package br.com.hyperclass.onauction.domain.user;
-
+/**
+ * A classe abstrata <code>User</code> representa um usário qualquer que acessa o leilão.
+ * 
+ * @author Marcelo
+ * 
+ */
 import java.io.Serializable;
 import java.security.Principal;
 

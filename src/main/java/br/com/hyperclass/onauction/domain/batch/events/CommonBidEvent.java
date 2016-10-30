@@ -7,7 +7,13 @@
 package br.com.hyperclass.onauction.domain.batch.events;
 
 import br.com.hyperclass.onauction.domain.user.Buyer;
-
+/**
+ * A classe <code>CommonBidEvent</code> representa o evento de um
+ *  lance sendo ofertado no lote do leilão.
+ *  
+ * @author Marcelo
+ *
+ */
 public class CommonBidEvent extends BidEvent {
 
 	private static final long serialVersionUID = 1L;

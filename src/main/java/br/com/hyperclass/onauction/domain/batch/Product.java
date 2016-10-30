@@ -5,7 +5,13 @@
  * proprietary/confidential. Use is subject to license terms.
  */
 package br.com.hyperclass.onauction.domain.batch;
-
+/**
+ * A classe <code>Product</code> é um value object que representa o produto
+ * em um lote do leilão.
+ * 
+ * @author Marcelo
+ *
+ */
 public class Product {
 	
 	private final String description;

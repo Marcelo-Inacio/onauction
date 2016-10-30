@@ -15,7 +15,13 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import br.com.hyperclass.onauction.restapi.wrapper.BidWrapper;
-
+/**
+ * A classe <code>BidDeserializer</code> cuida de desserializar o valor de um
+ * lance json vindo do cliente.
+ * 
+ * @author Marcelo
+ *
+ */
 public class BidDeserializer extends JsonDeserializer<BidWrapper> {
 
 	@Override

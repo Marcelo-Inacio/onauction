@@ -23,6 +23,8 @@ import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.JWTParser;
 
 import br.com.hyperclass.onauction.authentication.PreAuthenticatedAuthentication;
+import br.com.hyperclass.onauction.domain.auction.AuctionException;
+import br.com.hyperclass.onauction.domain.user.User;
 import br.com.hyperclass.onauction.domain.user.UserRepository;
 
 @Component
@@ -55,7 +57,14 @@ public class JwtAuthenticationManager implements AuthenticationManager {
         }
 
         final String username = claims.getSubject();
-        return new PreAuthenticatedAuthentication(repository.getByUsername(username));
+        
+        User user = null;
+        try {
+			user = repository.getByUsername(username);
+		} catch (AuctionException e) {
+			e.printStackTrace();
+		}
+        return new PreAuthenticatedAuthentication(user);
 	}
 	
 	

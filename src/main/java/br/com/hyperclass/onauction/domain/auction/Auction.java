@@ -17,7 +17,7 @@ import br.com.hyperclass.onauction.domain.batch.Batch;
 import br.com.hyperclass.onauction.domain.batch.BatchRepository;
 import br.com.hyperclass.onauction.domain.batch.InvalidOperationBatchException;
 import br.com.hyperclass.onauction.domain.batch.NoBatchIsOpenException;
-import br.com.hyperclass.onauction.domain.batch.NotFoundBatchException;
+import br.com.hyperclass.onauction.domain.batch.BatchNotFoundException;
 import br.com.hyperclass.onauction.domain.user.Buyer;
 import br.com.hyperclass.onauction.domain.user.User;
 /**
@@ -30,38 +30,61 @@ public class Auction {
 	private BatchRepository repository;
 	private final Map<String, Buyer> buyers = new HashMap<>();
 	private Batch currentBatch = null;
-	
+	/**
+	 * Construtor necessita de um lista de compradores para utilização de recursos da aplicação 
+	 * @param buyers
+	 */
 	public Auction(final List<User> buyers) {
 		this.buyers.clear();
 		loadBuyers(buyers);
 	}
-	
+	/**
+	 * Cria um novo lote para ser leiloado.
+	 * @param newBatch
+	 * @return
+	 */
 	public Batch createBatch(final Batch newBatch) {
 		return repository.save(newBatch);
 	}
-	
+	/**
+	 * Exclui um lote cadastrado se o mesmo não existiver em andamento ou fechado.
+	 * @param code
+	 * @throws AuctionException
+	 */
 	public void removeBatch(final int code) throws AuctionException {
 		final Batch batch = repository.findById(code);
 		if(batch == null) {
-			throw new NotFoundBatchException();
+			throw new BatchNotFoundException();
 		}
 		if(!batch.isCreated()) {
-			throw new InvalidOperationBatchException();			
+			throw new InvalidOperationBatchException("Removal");			
 		}
 		repository.delete(code);
 	}
-	
+	/**
+	 * Recupera todos os lotes cadastrados na aplicação.
+	 * @return
+	 */
 	public Collection<Batch> getAllBatches() {
 		return repository.findAll();
 	}
-	
+	/**
+	 * Recupera o lote que está em andamento no leilão.
+	 * @return
+	 * @throws AuctionException
+	 */
 	public Batch getCurrentBatch() throws AuctionException {
 		if(currentBatch == null) {
 			throw new NoBatchIsOpenException();
 		}
 		return currentBatch;
 	}
-	
+	/**
+	 * Método que permite dar lance em um leilão que esteje em andamento.
+	 * @param buyerCode
+	 * @param value
+	 * @throws AuctionException
+	 */
 	public void toBid(final String buyerCode, final double value) throws AuctionException {
 		final Buyer buyer = (Buyer)buyers.get(buyerCode);
 		if(currentBatch == null) {
@@ -69,7 +92,10 @@ public class Auction {
 		}
 		currentBatch.toBid(buyer, value);
 	}
-	
+	/**
+	 * Método que realiza o encerramento de um lote em andamento no leilão.
+	 * @throws AuctionException
+	 */
 	public void closeBatch() throws AuctionException {
 		if(currentBatch == null) {
 			throw new NoBatchIsOpenException();
@@ -77,22 +103,30 @@ public class Auction {
 		currentBatch.close();
 		currentBatch = null;
 	}
-	
+	/**
+	 * Método que realiza a abetura de um lote para lances no leilão
+	 * @param code
+	 * @throws AuctionException
+	 */
 	public void openBatch(final int code) throws AuctionException {
 		final Batch batch = repository.findById(code); 
 		if(batch == null) {
-			throw new NotFoundBatchException();
+			throw new BatchNotFoundException();
 		}
 		if(currentBatch != null) {
-			throw new InvalidOperationBatchException();
+			throw new InvalidOperationBatchException("Opening");
 		}
 		currentBatch = batch;
 		currentBatch.open();
 	}
-	
+	/**
+	 * Método que recupera a último valor ofertado do lote que está em andamento no leilão.
+	 * @return
+	 * @throws AuctionException
+	 */
 	public double getLastBidValue() throws AuctionException {
 		if(currentBatch == null) {
-			throw new NotFoundBatchException();
+			throw new BatchNotFoundException();
 		}
 		return currentBatch.getLastBidValue();
 	}

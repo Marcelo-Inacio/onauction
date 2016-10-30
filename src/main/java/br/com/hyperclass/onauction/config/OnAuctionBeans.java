@@ -19,20 +19,35 @@ import br.com.hyperclass.onauction.domain.user.Buyer;
 import br.com.hyperclass.onauction.domain.user.Login;
 import br.com.hyperclass.onauction.domain.user.User;
 import br.com.hyperclass.onauction.domain.user.UserRepository;
-
+/**
+ * A classe <code>OnAuctionBeans</code> instância todos Beans necessários
+ * de utilização na aplicação
+ * @author Marcelo
+ *
+ */
 @Configuration
 public class OnAuctionBeans {
-
+	/**
+	 * Instância a classe princípal da aplicação, que é utilizada na classe 
+	 * <code>OnAuctionApplication</code> que cuida da segurança em nível de método.
+	 * @return
+	 */
 	@Bean
 	public Auction auction() {
 		return new Auction(buyersUsers());
 	}
-	
+	/**
+	 * Repositório para acesso aos usuários da aplicação.
+	 * @return
+	 */
 	@Bean
 	public UserRepository userRepository() {
 		return new UserRepository(buyersUsers(), restrictUsers());
 	}
-	
+	/**
+	 * Usuários compradores cadastrados na aplicação.
+	 * @return
+	 */
 	@Bean
 	public List<User> buyersUsers() {
 		final List<User> buyers = new ArrayList<>();
@@ -42,7 +57,10 @@ public class OnAuctionBeans {
 		buyers.add(new Buyer("0013", "ruy", new Login("ruy","123")));
 		return buyers;
 	}
-	
+	/**
+	 * Usuários administradores e leiloerios cadastrados na aplicação.
+	 * @return
+	 */
 	@Bean
 	public List<User> restrictUsers() {
 		final List<User> users = new ArrayList<>();

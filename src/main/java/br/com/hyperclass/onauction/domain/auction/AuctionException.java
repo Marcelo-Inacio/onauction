@@ -6,6 +6,13 @@
  */
 package br.com.hyperclass.onauction.domain.auction;
 
+/**
+ * A classe <code>AuctionException</code> é a raiz de todas as exceceções
+ * referentes as funcionalidades do leilão que podem acontecer na aplicação.
+ * 
+ * @author Marcelo
+ *
+ */
 public abstract class AuctionException extends Exception {
 
 	private static final long serialVersionUID = 1L;

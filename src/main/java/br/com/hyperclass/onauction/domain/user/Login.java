@@ -5,7 +5,12 @@
  * proprietary/confidential. Use is subject to license terms.
  */
 package br.com.hyperclass.onauction.domain.user;
-
+/**
+ * A classe <code>Login</code> representa as credenciais de acesso ao leilão.
+ * 
+ * @author Marcelo
+ *
+ */
 public class Login {
 	
 	private final String username;

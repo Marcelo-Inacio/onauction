@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import br.com.hyperclass.onauction.domain.auction.AuctionException;
 import br.com.hyperclass.onauction.domain.user.User;
 import br.com.hyperclass.onauction.domain.user.UserRepository;
 
@@ -32,7 +33,12 @@ public class DefaultAuthenticationProvider extends DaoAuthenticationProvider {
 
 	@Override
 	public Authentication authenticate(final Authentication authentication) throws AuthenticationException {
-		final User user = repository.getByUsername(authentication.getName());
+		User user = null;
+		try {
+			user = repository.getByUsername(authentication.getName());
+		} catch (AuctionException e) {
+			e.printStackTrace();
+		}
 		return new PreAuthenticatedAuthentication(user);
 	}
 

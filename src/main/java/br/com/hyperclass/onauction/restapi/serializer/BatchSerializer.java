@@ -15,9 +15,13 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 
 import br.com.hyperclass.onauction.restapi.wrapper.BatchWrapper;
-
+/**
+ * A classe <code>BatchSerializer</code> cuida de serializar um objeto lote para json.
+ * 
+ * @author Marcelo
+ *
+ */
 public class BatchSerializer extends JsonSerializer<BatchWrapper> {
-	
 	
 	private DefaultBatchSerializer defaultBatchSerializer;
 

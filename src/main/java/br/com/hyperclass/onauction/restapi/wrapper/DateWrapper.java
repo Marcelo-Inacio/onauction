@@ -12,7 +12,12 @@ import java.util.Date;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import br.com.hyperclass.onauction.restapi.serializer.DateDeserializer;
-
+/**
+ * A classe <code>DateWrapper</code> representa um data customizada para o formato brasileiro.
+ * 
+ * @author Marcelo
+ *
+ */
 @JsonDeserialize(using = DateDeserializer.class)
 public class DateWrapper {
 	
@@ -25,7 +30,12 @@ public class DateWrapper {
 	public String getDateFormatPtBr() {
 		return formatPtBr(date);
 	}
-	
+	/**
+	 * Método que formata um objeto Date para String com o formato de data do Brasil.
+	 *  
+	 * @param date
+	 * @return
+	 */
 	private String formatPtBr(final Date date) {
 		final SimpleDateFormat fmt = new SimpleDateFormat("dd-MM-yyyy");
 		return fmt.format(date);
