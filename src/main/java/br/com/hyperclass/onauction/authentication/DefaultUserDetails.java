@@ -6,7 +6,9 @@
  */
 package br.com.hyperclass.onauction.authentication;
 
-import java.util.Collections;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -33,7 +35,13 @@ public class DefaultUserDetails implements UserDetailsService {
 			e.printStackTrace();
 		}
 		final Login login = user.getLogin();
-		return new User(login.getUsername(), login.getUsername(), Collections.<GrantedAuthority> emptyList());
+		return new User(login.getUsername(), login.getUsername(), getRoles(user));
+	}
+	
+	private Collection<GrantedAuthority> getRoles(final br.com.hyperclass.onauction.domain.user.User user) {
+		final List<GrantedAuthority> authorities = new ArrayList<>(1);
+		authorities.add(new DefaultGrantedAuthority(user.getProfile()));
+		return authorities;
 	}
 	
 	@Autowired

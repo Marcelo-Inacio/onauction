@@ -51,10 +51,10 @@ public class OnAuctionBeans {
 	@Bean
 	public List<User> buyersUsers() {
 		final List<User> buyers = new ArrayList<>();
-		buyers.add(new Buyer("0010", "helio", new Login("helio","123")));
-		buyers.add(new Buyer("0011", "sabrina", new Login("sabrina","123")));
-		buyers.add(new Buyer("0012", "julia", new Login("julia","123")));
-		buyers.add(new Buyer("0013", "ruy", new Login("ruy","123")));
+		buyers.add(new Buyer("0010", "helio", new Login("helio","$2a$06$L3FpkE4Zl0FgXpqTtiUuNuI10raicIv0PqkapqN3hxrenCPrlHSOa")));
+		buyers.add(new Buyer("0011", "sabrina", new Login("sabrina","$2a$06$l.5bndH7ONi6Ci6JlP/rWu671845EsltzZwtOfMaVJIiXYAwDSMSa")));
+		buyers.add(new Buyer("0012", "julia", new Login("julia","$2a$06$cUyrzi5HeGuuati8IP3sFe20ZxpWRyb/8ARwWvQ1bXcjduSr0P7tS")));
+		buyers.add(new Buyer("0013", "ruy", new Login("ruy","$2a$06$Pm1O9C5UmQHMJasDAqeeWuKsPEc/Fmly994JAmg3PX6TlrfKtwSUi")));
 		return buyers;
 	}
 	/**
@@ -64,8 +64,8 @@ public class OnAuctionBeans {
 	@Bean
 	public List<User> restrictUsers() {
 		final List<User> users = new ArrayList<>();
-		users.add(new Admin("admin", new Login("admin","admin")));
-		users.add(new Auctioneer("auctioneer", new Login("auctioneer","auctioneer")));
+		users.add(new Admin("admin", new Login("admin","$2a$05$Z9rDVGxDp5fG1gVwlZk9BO8uuEyZbgH2FxKMR1xmuX6E0t.ValGXy")));
+		users.add(new Auctioneer("auctioneer", new Login("auctioneer","$2a$06$J8e/VtGx0cUu5xEbAKIdgOTHTFdyBYp35gFysDSJr4i55syakGUFq")));
 		return users;
 	}
 	

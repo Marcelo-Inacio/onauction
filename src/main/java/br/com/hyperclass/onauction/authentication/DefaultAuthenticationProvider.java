@@ -7,11 +7,9 @@
 package br.com.hyperclass.onauction.authentication;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import br.com.hyperclass.onauction.domain.auction.AuctionException;
@@ -19,27 +17,32 @@ import br.com.hyperclass.onauction.domain.user.User;
 import br.com.hyperclass.onauction.domain.user.UserRepository;
 
 @Component
-public class DefaultAuthenticationProvider extends DaoAuthenticationProvider {
+public class DefaultAuthenticationProvider implements AuthenticationProvider {
 	
-	private final UserRepository repository;
-	
-	@Autowired
-    public DefaultAuthenticationProvider(final UserRepository repository, final UserDetailsService service, final PasswordEncoder encoder) {
-        super();
-        setUserDetailsService(service);
-        setPasswordEncoder(encoder);
-        this.repository = repository;
-    }
+	private UserRepository repository;
 
 	@Override
 	public Authentication authenticate(final Authentication authentication) throws AuthenticationException {
 		User user = null;
 		try {
 			user = repository.getByUsername(authentication.getName());
-		} catch (AuctionException e) {
+			if(!user.getPassword().equals(authentication.getCredentials())) {
+				throw new BadCredentialsExceptions("username/password invalid");
+			}
+		} catch (final AuctionException e) {
 			e.printStackTrace();
 		}
 		return new PreAuthenticatedAuthentication(user);
+	}
+
+	@Override
+	public boolean supports(Class<?> arg0) {
+		return true;
+	}
+	
+	@Autowired
+	public void setRepository(final UserRepository userRepository) {
+		repository = userRepository;
 	}
 
 }
